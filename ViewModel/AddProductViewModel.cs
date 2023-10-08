@@ -22,7 +22,7 @@ namespace sensusProducts.ViewModel
     public class AddProductViewModel:INotifyPropertyChanged
     {
         #region Properties
-        private readonly IProductService productService;
+        private IProductService productService;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -82,6 +82,7 @@ namespace sensusProducts.ViewModel
         [Obsolete]
         public AddProductViewModel()
         {
+            productService = new ProductServices();
             addProductCommand = new AddproductCommand(Add_Product);
             IsSubmitButtonEnabled = false;
             ImageTextBoxes = new ObservableCollection<ImageTextBox>();
@@ -195,6 +196,7 @@ namespace sensusProducts.ViewModel
                 }
                 ProductDataScraping scrapData = new ProductDataScraping();
                 Product product = await scrapData.ScrapData(ProductLink);
+                productService.AddProduct(product);
 
             }
             else
@@ -203,7 +205,7 @@ namespace sensusProducts.ViewModel
                 ProductImgLinks = GetImgLinks();
 
                 Product product = new Product
-                {
+                {   
                     UtilityTypes = UtilityTypesList,
                     Name = ProductName,
                     Description = ProductDescription,
@@ -212,6 +214,7 @@ namespace sensusProducts.ViewModel
                     DocLink = ProductDocLink,
                     ImgLinks = ProductImgLinks
                 };
+                productService.AddProduct(product);
             }
             
            
