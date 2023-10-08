@@ -1,0 +1,59 @@
+﻿<Window x:Class="sensusProducts.View.AddProductView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:sensusProducts.View"
+        xmlns:xm="clr-namespace:sensusProducts.ViewModel.Helpers"
+        xmlns:vm="clr-namespace:sensusProducts.ViewModel"
+        mc:Ignorable="d"
+        Title="AddProductView" Height="450" Width="800">
+
+    <Window.Resources>
+        <vm:AddProductViewModel x:Key="vm"/>
+        <xm:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <xm:OptionConverter x:Key="OptionConverter" />
+    </Window.Resources>
+
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.RowSpan="2">
+            <Label Name="TitleL" Content="Add Product" />
+            <RadioButton Content="Enter Source Link" GroupName="insertType"
+                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" />
+            <RadioButton Content="Enter Manually" GroupName="insertType"
+                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" />
+            <ContentControl Grid.Row="1">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedOption}" Value="Source">
+                                <Setter Property="Content">
+                                    <Setter.Value >
+                                        <!-- Content for Source option -->
+                                        <StackPanel DataContext="{StaticResource vm}">
+                                            <TextBlock Text="Enter URL:" />
+                                            <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedOption}" Value="Manual">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <!-- Content for Manual option -->
+                                        <TextBlock Text="Content for Manual option" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
+            <Button Command="{Binding addProductCommand}" Content="Submit" IsEnabled="{Binding ProductLink, Mode=TwoWay, Converter={StaticResource InverseBooleanConverter}, ConverterParameter=empty}" />
+        </StackPanel>
+    </Grid>
+</Window>
