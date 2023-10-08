@@ -11,10 +11,9 @@
 
     <Window.Resources>
         <vm:AddProductViewModel x:Key="vm"/>
-        <xm:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <xm:OptionConverter x:Key="OptionConverter" />
     </Window.Resources>
-
+    <ScrollViewer>
     <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -37,6 +36,8 @@
                                         <StackPanel DataContext="{StaticResource vm}">
                                             <TextBlock Text="Enter URL:" />
                                             <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
+                                            <Button Command="{Binding addProductCommand}" Content="Submit" 
+                                                IsEnabled="{Binding IsSubmitButtonEnabled}" />
                                         </StackPanel>
                                     </Setter.Value>
                                 </Setter>
@@ -45,7 +46,66 @@
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <!-- Content for Manual option -->
-                                        <TextBlock Text="Content for Manual option" />
+                                        
+                                            <Grid Margin="20">
+                                                <StackPanel DataContext="{StaticResource vm}">
+                                                    <!-- Product Name -->
+                                                    <TextBlock Text="Product Name:" />
+                                                    <TextBox Name="productNameTextBox" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
+
+                                                    <!-- Product Description -->
+                                                    <TextBlock Text="Product Description:" />
+                                                    <TextBox Name="productDescriptionTextBox" Text="{Binding ProductDescription}" Width="300" Height="100" Margin="0,0,0,10" />
+
+                                                    <!-- Product Features -->
+                                                    <TextBlock Text="Product Features:" />
+                                                    <TextBox Name="productFeaturesTextBox" Text="{Binding ProductFeatures}" Width="300" Height="100" Margin="0,0,0,10" />
+
+                                                    <!-- Utility Types (Checkboxes) -->
+                                                    <!-- Utility Types (Checkboxes) -->
+                                                    <TextBlock Text="Utility Types:" />
+                                                    <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" />
+                                                    <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" />
+                                                    <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" />
+
+
+                                                    <!-- Document Link -->
+                                                    <TextBlock Text="Document Link:" />
+                                                    <TextBox Text="{Binding ProductDocLink}" Name="documentLinkTextBox" Width="300" Margin="0,0,0,10" />
+
+                                                    <!-- Find Document Link -->
+                                                    <TextBlock Text="Find Document Link:" />
+                                                    <TextBox Text="{Binding ProductFindDocLink}" Name="findDocumentLinkTextBox" Width="300" Margin="0,0,0,10" />
+
+                                                    <!-- Number of Image Links (Dropdown) -->
+                                                    <TextBlock Text="Number of Image Links:" />
+                                                    <ComboBox Name="imageLinksCountComboBox" Width="100" Margin="0,0,0,10" 
+                                                           SelectedItem="{Binding SelectedItemCount, Mode=TwoWay}" >
+                                                        <ComboBoxItem Content="1" />
+                                                        <ComboBoxItem Content="2" />
+                                                        <ComboBoxItem Content="3" />
+                                                        <ComboBoxItem Content="4" />
+                                                        <ComboBoxItem Content="5" />
+                                                    </ComboBox>
+                                                    <!-- Image Links (variable number of TextBoxes based on user input) -->
+                                                    <TextBlock Text="Image Links:" />
+                                                    <ItemsControl Name="imageLinksStackPanel" ItemsSource="{Binding ImageTextBoxes}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Text="{Binding Label}" Margin="0,0,10,0" />
+                                                                    <ContentPresenter Content="{Binding TextBox}" />
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+
+                                                    <!-- Submit Button -->
+                                                    <Button Command="{Binding addProductCommand}" Content="Submit" 
+                                                     />
+                                                </StackPanel>
+                                            </Grid>
+                                        
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
@@ -53,7 +113,8 @@
                     </Style>
                 </ContentControl.Style>
             </ContentControl>
-            <Button Command="{Binding addProductCommand}" Content="Submit" IsEnabled="{Binding ProductLink, Mode=TwoWay, Converter={StaticResource InverseBooleanConverter}, ConverterParameter=empty}" />
+            
         </StackPanel>
     </Grid>
+    </ScrollViewer>
 </Window>

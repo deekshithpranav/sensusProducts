@@ -9,8 +9,6 @@ namespace sensusProducts.Model
     public class Product
     {
 
-        public UtilityType uType { get; set; }
-
         public string Description { get; set; }
 
         public string Name { get; set; }

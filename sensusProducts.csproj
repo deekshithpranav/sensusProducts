@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Service\ProductDataScraping.cs" />
     <Compile Include="Service\ProductServices.cs" />
     <Compile Include="Service\IProductService.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />

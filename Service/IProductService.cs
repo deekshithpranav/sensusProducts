@@ -9,9 +9,9 @@ namespace sensusProducts.Service
 {
     public interface IProductService
     {
-        Task<Product> AddProductFromSource(String url);
-        void AddProductManual();
-        void AddFilter();
+        void AddProduct();
         void LoadProduct();
+        void UpdateProduct();
+        void DeleteProduct();
     }
 }
