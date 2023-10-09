@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\UtilityTypeImg.cs" />
     <Compile Include="Service\ProductDataScraping.cs" />
     <Compile Include="Service\ProductServices.cs" />
     <Compile Include="Service\IProductService.cs" />
@@ -75,6 +76,9 @@
     </Compile>
     <Compile Include="ViewModel\Commands\RelayCommand.cs" />
     <Compile Include="ViewModel\Helpers\OptionConverter.cs" />
+    <Compile Include="View\HomePageView.xaml.cs">
+      <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

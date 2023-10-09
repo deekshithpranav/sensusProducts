@@ -6,8 +6,11 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace sensusProducts.Service
 {
@@ -100,9 +103,129 @@ namespace sensusProducts.Service
             throw new NotImplementedException();
         }
 
-        public void LoadProduct()
+        public List<Product> LoadProductPage()
         {
-            throw new NotImplementedException();
+            List<Product> products = new List<Product>();
+
+            string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+            string query = @"
+                 SELECT * FROM productIDs;
+            ";
+            try
+            {
+                // Create a SqlConnection
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int _id = int.Parse(reader["PID"].ToString());
+                                string _Name = reader["PName"].ToString();
+                                
+
+
+                                Product product = new Product
+                                    {
+                                        // Map database columns to Product properties
+                                        Id = _id,
+                                        Name = _Name,
+                                        
+                                        // Map other properties here...
+                                    };
+
+
+
+
+                                    products.Add(product);
+                                }
+                            }
+                        foreach(Product product in products)
+                        {
+                            int _id = product.Id;
+                            string _PFeatures = "";
+                            string _PDesc = "";
+                            string _DocLink = "";
+                            string _FindDocLink = "";
+                            List<string> _ImgLinks = new List<string>();
+                            List<UtilityType> _utilityTypes = new List<UtilityType>();
+
+                            query = @"SELECT * FROM PDetails WHERE PID = @IntValue;";
+
+                            using (SqlCommand command2 = new SqlCommand(query, connection))
+                            {
+                                // Provide parameter values
+                                command2.Parameters.AddWithValue("@IntValue", _id);
+
+                                using (SqlDataReader reader2 = command2.ExecuteReader())
+                                {
+                                    while (reader2.Read())
+                                    {
+                                        _PDesc = reader2["PDesc"].ToString();
+                                        _PFeatures = reader2["PFeatures"].ToString();
+                                        _DocLink = reader2["DocLink"].ToString();
+                                        _FindDocLink = reader2["FindDocLink"].ToString();
+                                    }
+                                }
+                            }
+
+                            query = @"SELECT * FROM ProductImgLinks WHERE PID = @IntValue;";
+
+                            using (SqlCommand command2 = new SqlCommand(query, connection))
+                            {
+                                // Provide parameter values
+                                command2.Parameters.AddWithValue("@IntValue", _id);
+
+                                using (SqlDataReader reader2 = command2.ExecuteReader())
+                                {
+                                    while (reader2.Read()) // Check if there is data to read
+                                    {
+                                        string temp = reader2["ImgLink"].ToString();
+                                        _ImgLinks.Add(temp);
+                                    }
+                                }
+                            }
+
+
+                            query = @"SELECT * FROM PUtility WHERE PID = @IntValue;";
+
+                            using (SqlCommand command2 = new SqlCommand(query, connection))
+                            {
+                                // Provide parameter values
+                                command2.Parameters.AddWithValue("@IntValue", _id);
+                                using (SqlDataReader reader2 = command2.ExecuteReader())
+                                {
+                                    while (reader2.Read()) // Check if there is data to read
+                                    {
+                                        Enum.TryParse(reader2["Utility"].ToString(), out UtilityType temp);
+                                        _utilityTypes.Add(temp);
+                                    }
+                                }
+                            }    
+
+                            product.Description = _PDesc;
+                            product.Features = _PFeatures;
+                            product.DocLink = _DocLink;
+                            product.FindDocLink = _FindDocLink;
+                            product.ImgLinks = _ImgLinks;
+                            product.UtilityTypes = _utilityTypes;
+                        }
+                        
+                        }
+                    }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return products;
         }
 
         public void UpdateProduct()

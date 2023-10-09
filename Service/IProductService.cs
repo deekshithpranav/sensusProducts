@@ -10,7 +10,7 @@ namespace sensusProducts.Service
     public interface IProductService
     {
         void AddProduct(Product product);
-        void LoadProduct();
+        List<Product> LoadProductPage();
         void UpdateProduct();
         void DeleteProduct();
     }

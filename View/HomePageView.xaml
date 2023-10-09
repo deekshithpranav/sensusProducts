@@ -6,12 +6,9 @@
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
-        Title="HomePageView" Height="450" Width="800">
+        Title="HomePageView" MinHeight="450" MinWidth="800">
 
-    <Window.Resources>
-        <vm:HomePageViewModel x:Key="hpvm" />
-    </Window.Resources>
-    <Grid Visibility="Visible" DataContext="{StaticResource hpvm}" >
+    <Grid Visibility="Visible" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="3*" />
@@ -21,7 +18,7 @@
             <Button Command="{Binding OpenAddProductPageCommand}" Content="Add Product" Width="100" Margin="30" />
             <Label Content="Filter" FontWeight="Bold"/>
             <StackPanel Margin="10,0">
-                <CheckBox Name="chkWater" Content="Water" IsChecked="False" />
+                <CheckBox Name="chkWater" Content="Water" IsChecked="False" Command="{Binding LoadWaterProducts}"/>
                 <CheckBox Name="chkGas" Content="Gas" IsChecked="False" />
                 <CheckBox Name="chkElectric" Content="Electric" IsChecked="False" />
                 <CheckBox Name="chkSoftware" Content="Software" IsChecked="False" />
@@ -32,22 +29,18 @@
 
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <TextBox Margin="30,50,0,10" Height="25" Width="auto" FontSize="13" VerticalAlignment="Center"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBox Margin="30,50,30,10" Height="25" Width="auto" FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
 
+                <ScrollViewer Grid.Row="1" Name="ProductList" MinHeight="450">
+                    
+                </ScrollViewer>
             </Grid>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" Grid.Column="1">
-                <ListView >
-                    <StackPanel Orientation="Vertical" Margin="5">
-                        <Image Source="https://sensusglobal.wpenginepowered.com/wp-content/uploads/sensus-046-field-regulator-product.jpg" Width="100" Height="100" />
-                        <TextBlock Text="046 Field Regulators" FontWeight="Bold" />
-                        <TextBlock Text="{Binding utilityName}" />
-                    </StackPanel>
-                </ListView>
-            </ScrollViewer>
+            
+            
         </StackPanel>
     </Grid>
 </Window>

@@ -8,6 +8,7 @@ namespace sensusProducts.Model
 {
     public class Product
     {
+        public int Id { get; set; }
 
         public string Description { get; set; }
 
@@ -22,6 +23,8 @@ namespace sensusProducts.Model
         public List<string> ImgLinks { get; set; }
 
         public List<UtilityType> UtilityTypes { get; set; }
+
+        public string ImgLink { get; set; }
 
         public Product() { 
         

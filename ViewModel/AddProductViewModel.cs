@@ -88,10 +88,7 @@ namespace sensusProducts.ViewModel
             ImageTextBoxes = new ObservableCollection<ImageTextBox>();
         }
 
-        public AddProductViewModel(IProductService productService)
-        {
-            this.productService = productService;
-        }
+       
 
 
         protected virtual void OnPropertyChanged(string propertyName)

@@ -129,8 +129,9 @@ namespace sensusProducts.Service
 
                         var productImage = htmlDoc.DocumentNode.SelectSingleNode("//div[@class='product-image']");
                         var img = productImage.SelectSingleNode(".//img").GetAttributeValue("src", "");
-                        imgHyperLinkList.Add(img);
-                        Console.WriteLine(img);
+                        var fullsizeimage = img.Substring(0, img.Length - 12) + ".jpg";
+                        imgHyperLinkList.Add(fullsizeimage);
+                        Console.WriteLine(fullsizeimage);
                     }
                     product.ImgLinks = imgHyperLinkList;
 
