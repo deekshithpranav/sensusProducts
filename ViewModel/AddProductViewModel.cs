@@ -1,37 +1,37 @@
 ﻿using sensusProducts.Model;
-using sensusProducts.View;
-using sensusProducts.ViewModel.Helpers;
 using sensusProducts.Service;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.ComponentModel;
-using System.Globalization;
-using System.Windows.Data;
-using System.Diagnostics;
-using System.Windows.Input;
-using sensusProducts.ViewModel.Commands;
-using System.Windows.Controls;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Controls;
+using sensusProducts.ViewModel.Commands;
+using sensusProducts.ViewModel.Helpers;
 
 namespace sensusProducts.ViewModel
 {
-    public class AddProductViewModel:INotifyPropertyChanged
+    public class AddProductViewModel : INotifyPropertyChanged
     {
-        #region Properties
-        private IProductService productService;
+        #region 
 
+        // Event handler for property change notifications
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Converter for option selection
         public OptionConverter optionConverter;
 
+        // Command for adding a product
         public ICommand addProductCommand { get; }
 
+        // Service for managing product data
+        private IProductService productService;
 
-
+        // Selected option for product addition (e.g., 'Source' or 'Manual')
         private string selectedOption;
 
         public string SelectedOption
@@ -44,6 +44,8 @@ namespace sensusProducts.ViewModel
                 OnPropertyChanged(nameof(SelectedOption));
             }
         }
+
+        // URL or source link for adding products
         private string productLink;
 
         public string ProductLink
@@ -61,6 +63,7 @@ namespace sensusProducts.ViewModel
             }
         }
 
+        // Flag to enable or disable the submit button
         private bool isSubmitButtonEnabled;
 
         public bool IsSubmitButtonEnabled
@@ -76,50 +79,19 @@ namespace sensusProducts.ViewModel
             }
         }
 
-        #endregion
-
-
-        [Obsolete]
-        public AddProductViewModel()
-        {
-            productService = new ProductServices();
-            addProductCommand = new AddproductCommand(Add_Product);
-            IsSubmitButtonEnabled = false;
-            ImageTextBoxes = new ObservableCollection<ImageTextBox>();
-        }
-
-       
-
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-
-
-        #region Properties
-
+        //product-related properties (e.g., name, description, etc.)
         public string ProductName { get; set; }
-
         public string ProductDescription { get; set; }
-
         public string ProductFeatures { get; set; }
-
         public string ProductFindDocLink { get; set; }
-
         public string ProductDocLink { get; set; }
-
         public List<string> ProductImgLinks { get; set; }
-
-        public ObservableCollection<ImageTextBox> ImageTextBoxes { get; set; } 
-
+        public ObservableCollection<ImageTextBox> ImageTextBoxes { get; set; }
         public List<UtilityType> UtilityTypesList { get; set; }
 
+        // Selected item count for generating text boxes
         private string _selectedItemCount;
+
         public string SelectedItemCount
         {
             get { return _selectedItemCount; }
@@ -130,11 +102,11 @@ namespace sensusProducts.ViewModel
                     _selectedItemCount = value.Substring(value.Length - 1);
                     GenerateTextBoxes();
                     OnPropertyChanged(nameof(SelectedItemCount));
-                    
                 }
             }
         }
 
+        // Flags for checking utility types (e.g., Water, Gas, Electric)
         private bool isWaterChecked;
         public bool IsWaterChecked
         {
@@ -177,45 +149,70 @@ namespace sensusProducts.ViewModel
             }
         }
 
-
         #endregion
 
+        // Constructor
+        [Obsolete]
+        public AddProductViewModel()
+        {
+            // Initialize productService and addProductCommand
+            productService = new ProductServices();
+            addProductCommand = new AddproductCommand(Add_Product);
+            IsSubmitButtonEnabled = false;
+            ImageTextBoxes = new ObservableCollection<ImageTextBox>();
+        }
 
+        // Method for handling property change events
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #region Methods
+
+        // Method for adding a product
         [Obsolete]
         public async void Add_Product()
-        {           
-            
+        {
             if (selectedOption == "Source")
             {
                 if (ProductLink == null)
                 {
+                    // Display an error message for an invalid URL
                     MessageBox.Show("Invalid URL", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
                 try
                 {
+                    // Scrape product data from the source URL
                     ProductDataScraping scrapData = new ProductDataScraping();
                     Product product = await scrapData.ScrapData(ProductLink);
+
+                    // Add the scraped product to the service
                     productService.AddProduct(product);
 
-                    // Show success message
+                    // Show a success message
                     MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
-                    // Handle the exception (e.g., invalid URL)
+                    // Handle exceptions, e.g., invalid URL
                     MessageBox.Show("Invalid URL: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
+                // Show a success message (redundant, consider removing)
                 MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
+                // Get selected utility types and image links
                 UtilityTypesList = GetCheckedUtilityTypes();
                 ProductImgLinks = GetImgLinks();
 
+                // Create a new product object
                 Product product = new Product
-                {   
+                {
                     UtilityTypes = UtilityTypesList,
                     Name = ProductName,
                     Description = ProductDescription,
@@ -224,14 +221,19 @@ namespace sensusProducts.ViewModel
                     DocLink = ProductDocLink,
                     ImgLinks = ProductImgLinks
                 };
+
+                // Add the manual product to the service
                 productService.AddProduct(product);
+
+                // Clear the product link field
                 ProductLink = string.Empty;
+
+                // Show a success message
                 MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            
-           
         }
 
+        // Get a list of checked utility types
         public List<UtilityType> GetCheckedUtilityTypes()
         {
             List<UtilityType> checkedUtilityTypes = new List<UtilityType>();
@@ -252,6 +254,7 @@ namespace sensusProducts.ViewModel
             return checkedUtilityTypes;
         }
 
+        // Get a list of image links from text boxes
         public List<string> GetImgLinks()
         {
             List<string> imgLinks = new List<string>();
@@ -263,14 +266,15 @@ namespace sensusProducts.ViewModel
             return imgLinks;
         }
 
+        // Generate text boxes based on selected item count
         public void GenerateTextBoxes()
         {
             ImageTextBoxes.Clear();
 
-            for(int i=0; i< int.Parse(SelectedItemCount); i++)
+            for (int i = 0; i < int.Parse(SelectedItemCount); i++)
             {
                 TextBox textBox = new TextBox();
-                String label = "Image Link " + (i + 1)+": ";
+                String label = "Image Link " + (i + 1) + ": ";
                 textBox.Name = "textBox" + (i + 1);
                 textBox.Width = 200;
                 textBox.Margin = new System.Windows.Thickness(0, 5, 0, 5);
@@ -284,13 +288,13 @@ namespace sensusProducts.ViewModel
             }
         }
 
-
+        #endregion
     }
+
+    // Helper class for image text boxes
     public class ImageTextBox
     {
         public string Label { get; set; }
         public TextBox TextBox { get; set; }
     }
-
-
 }

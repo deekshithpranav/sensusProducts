@@ -62,7 +62,6 @@
                                                     <TextBox Name="productFeaturesTextBox" Text="{Binding ProductFeatures}" Width="300" Height="100" Margin="0,0,0,10" />
 
                                                     <!-- Utility Types (Checkboxes) -->
-                                                    <!-- Utility Types (Checkboxes) -->
                                                     <TextBlock Text="Utility Types:" />
                                                     <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" />
                                                     <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" />

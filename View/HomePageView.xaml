@@ -18,30 +18,25 @@
             <Button Command="{Binding OpenAddProductPageCommand}" Content="Add Product" Width="100" Margin="30" />
             <Label Content="Filter" FontWeight="Bold"/>
             <StackPanel Margin="10,0">
-                <CheckBox Name="chkWater" Content="Water" IsChecked="False" Command="{Binding LoadWaterProducts}"/>
-                <CheckBox Name="chkGas" Content="Gas" IsChecked="False" />
-                <CheckBox Name="chkElectric" Content="Electric" IsChecked="False" />
-                <CheckBox Name="chkSoftware" Content="Software" IsChecked="False" />
+                <CheckBox Name="chkWater" Content="Water" IsChecked="{Binding IsWaterChecked}"/>
+                <CheckBox Name="chkGas" Content="Gas" IsChecked="{Binding IsGasChecked}"/>
+                <CheckBox Name="chkElectric" Content="Electric" IsChecked="{Binding IsElectricChecked}"/>
             </StackPanel>
         </StackPanel>
         <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
         <Border Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
-        <Button Margin="0,10" Width="80" Command="{Binding refreshProductList}" Content="Refresh" VerticalAlignment="Bottom"/>
+        <Button Margin="0,10" Width="80" Command="{Binding RefreshProductListCommand}" Content="Refresh" VerticalAlignment="Bottom"/>
 
-        <StackPanel  Grid.Column="1" Orientation="Vertical">
-            <Grid>
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
-                <TextBox Margin="30,50,30,10" Height="25" Width="auto" FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
+            <TextBox Margin="30,50,30,10" Height="25" Width="auto" Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
 
-                <ScrollViewer Grid.Row="1" Name="ProductList"    Margin="0,0,2,0">
+                <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
                     
                 </ScrollViewer>
             </Grid>
-            
-            
-        </StackPanel>
     </Grid>
 </Window>

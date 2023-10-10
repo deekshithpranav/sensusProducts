@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sensusProducts.View"
+        xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
         Title="ProductDetailsView" Height="450" Width="800">
-    <Grid>
-        <Label Content="dfdfff"/>
+
+    <Window.Resources>
+        <vm:ProductDetailsViewModel x:Key="pdvm" />
+    </Window.Resources>
+    
+    <Grid DataContext="{StaticResource pdvm}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="{Binding ProductName}" />
     </Grid>
 </Window>

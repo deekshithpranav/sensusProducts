@@ -103,7 +103,7 @@ namespace sensusProducts.Service
             throw new NotImplementedException();
         }
 
-        public List<Product> LoadProductPage()
+        public List<Product> LoadProductsFromDB()
         {
             List<Product> products = new List<Product>();
 
