@@ -187,14 +187,27 @@ namespace sensusProducts.ViewModel
             
             if (selectedOption == "Source")
             {
-                if(ProductLink == null)
+                if (ProductLink == null)
                 {
+                    MessageBox.Show("Invalid URL", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                ProductDataScraping scrapData = new ProductDataScraping();
-                Product product = await scrapData.ScrapData(ProductLink);
-                productService.AddProduct(product);
+                try
+                {
+                    ProductDataScraping scrapData = new ProductDataScraping();
+                    Product product = await scrapData.ScrapData(ProductLink);
+                    productService.AddProduct(product);
 
+                    // Show success message
+                    MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    // Handle the exception (e.g., invalid URL)
+                    MessageBox.Show("Invalid URL: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -212,6 +225,8 @@ namespace sensusProducts.ViewModel
                     ImgLinks = ProductImgLinks
                 };
                 productService.AddProduct(product);
+                ProductLink = string.Empty;
+                MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             
            
