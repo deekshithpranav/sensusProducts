@@ -8,35 +8,39 @@
         mc:Ignorable="d"
         Title="HomePageView" MinHeight="450" MinWidth="800">
 
-    <Grid Visibility="Visible" >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="3*" />
-        </Grid.ColumnDefinitions>
+    <Grid >
+        <Grid  Name="MainGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical">
-            <Button Command="{Binding OpenAddProductPageCommand}" Content="Add Product" Width="100" Margin="30" />
-            <Label Content="Filter" FontWeight="Bold"/>
-            <StackPanel Margin="10,0">
-                <CheckBox Name="chkWater" Content="Water" IsChecked="{Binding IsWaterChecked}"/>
-                <CheckBox Name="chkGas" Content="Gas" IsChecked="{Binding IsGasChecked}"/>
-                <CheckBox Name="chkElectric" Content="Electric" IsChecked="{Binding IsElectricChecked}"/>
+            <StackPanel Orientation="Vertical">
+                <Button Command="{Binding OpenAddProductPageCommand}" Content="Add Product" Width="100" Margin="30" />
+                <Label Content="Filter" FontWeight="Bold"/>
+                <StackPanel Margin="10,0">
+                    <CheckBox Name="chkWater" Content="Water" IsChecked="{Binding IsWaterChecked}"/>
+                    <CheckBox Name="chkGas" Content="Gas" IsChecked="{Binding IsGasChecked}"/>
+                    <CheckBox Name="chkElectric" Content="Electric" IsChecked="{Binding IsElectricChecked}"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
-        <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
-        <Border Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
-        <Button Margin="0,10" Width="80" Command="{Binding RefreshProductListCommand}" Content="Refresh" VerticalAlignment="Bottom"/>
+            <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
+            <Border Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
+            <Button Margin="0,10" Width="80" Command="{Binding RefreshProductListCommand}" Content="Refresh" VerticalAlignment="Bottom"/>
 
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
-            <TextBox Margin="30,50,30,10" Height="25" Width="auto" Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
+                <TextBox Margin="30,50,30,10" Height="25" Width="auto" Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
 
                 <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
-                    
+
                 </ScrollViewer>
             </Grid>
+        </Grid>
+        <Frame Name="viewProductFrame" NavigationUIVisibility="Hidden" JournalOwnership="OwnsJournal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
     </Grid>
+    
 </Window>

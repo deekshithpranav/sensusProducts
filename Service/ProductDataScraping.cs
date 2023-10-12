@@ -2,9 +2,12 @@
 using sensusProducts.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Emit;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace sensusProducts.Service
@@ -42,11 +45,37 @@ namespace sensusProducts.Service
                         // Iterate through text nodes within the descriptionnode
                         foreach (var textNode in descriptionNode.DescendantNodesAndSelf().Where(n => n.NodeType == HtmlNodeType.Text))
                         {
-                            string str = textNode.InnerText.Trim();
-                            if (!string.IsNullOrEmpty(str))
+
+                            string inputText = textNode.InnerText.Trim();
+
+                            // Split the text into sentences using regular expressions
+                            string[] sentences = Regex.Split(inputText, @"(?<=[.!?])\s+");
+
+                            // Initialize a StringBuilder to recombine the sentences
+                            StringBuilder formattedText = new StringBuilder();
+
+                            // Add a line break after every two sentences
+                            for (int i = 0; i < sentences.Length; i++)
                             {
-                                str = HtmlEntity.DeEntitize(str);
-                                desc.Add(str);
+                                formattedText.Append(sentences[i]);
+
+                                // Add a line break after every second sentence
+                                if ((i + 1) % 2 == 0)
+                                {
+                                    formattedText.AppendLine(); // Add a line break
+                                }
+                                else
+                                {
+                                    formattedText.Append(" "); // Add a space between sentences
+                                }
+                            }
+
+                            string outputText = formattedText.ToString();
+
+                            if (!string.IsNullOrEmpty(outputText))
+                            {
+                                outputText = HtmlEntity.DeEntitize(outputText);
+                                desc.Add(outputText);
                             }
                         }
                     }

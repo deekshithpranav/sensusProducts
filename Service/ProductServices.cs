@@ -94,13 +94,66 @@ namespace sensusProducts.Service
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Debug.WriteLine("Error: " + ex.Message);
             }
         }
 
-        public void DeleteProduct()
+        public void DeleteProductInDB(int PID)
         {
-            throw new NotImplementedException();
+            string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+            string query;
+            
+            try
+            {
+                // Create a SqlConnection
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    query = "DELETE FROM PDetails WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Provide parameter values
+                        command.Parameters.AddWithValue("@IntValue", PID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+                    
+                    query = "DELETE FROM ProductImgLinks WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Provide parameter values
+                        command.Parameters.AddWithValue("@IntValue", PID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+                    query = "DELETE FROM productIDs WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Provide parameter values
+                        command.Parameters.AddWithValue("@IntValue", PID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+                    query = "DELETE FROM PUtiliy WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Provide parameter values
+                        command.Parameters.AddWithValue("@IntValue", PID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex.Message);
+            }
         }
 
         public List<Product> LoadProductsFromDB()
@@ -228,9 +281,9 @@ namespace sensusProducts.Service
             return products;
         }
 
-        public void UpdateProduct()
+        public void UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            
         }
     }
 

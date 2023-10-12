@@ -22,7 +22,7 @@ namespace sensusProducts.ViewModel
     // ViewModel responsible for the home page functionality
     public class HomePageViewModel : INotifyPropertyChanged
     {
-        public HomePageViewModel(ScrollViewer ScrollViewer)
+        public HomePageViewModel(ScrollViewer ScrollViewer, Frame viewProductFrame, Grid MainGrid)
         {
             // Initialize commands and services
             this.ScrollViewer = ScrollViewer;
@@ -31,10 +31,16 @@ namespace sensusProducts.ViewModel
             productService = new ProductServices();
             productService.LoadProductsFromDB();
             ScrollViewer.Content = new StackPanel();
-
+            ViewProductFrame = viewProductFrame;
+            this.MainGrid = MainGrid;
             // Generate the initial product list after getting the list from DB
             products = productService.LoadProductsFromDB();
             GenerateProductList();
+        }
+
+        public HomePageViewModel()
+        {
+
         }
 
         #region Properties
@@ -43,6 +49,9 @@ namespace sensusProducts.ViewModel
 
         public ICommand RefreshProductListCommand { get; }
 
+        public Frame ViewProductFrame;
+
+        public Grid MainGrid;
 
         public ICommand GasFilter { get; }
 
@@ -53,8 +62,6 @@ namespace sensusProducts.ViewModel
         private string searchProduct;
 
         List<Product> products;
-
-        ScrollViewer scrollViewer;
 
         public string SearchProduct
         {
@@ -113,6 +120,21 @@ namespace sensusProducts.ViewModel
                     OnPropertyChanged(nameof(isElectricChecked));
                     GenerateWaterProducts();
                 }
+            }
+        }
+
+
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+            set
+            {
+                isVisible = value;
+                OnPropertyChanged(nameof(IsVisible));
             }
         }
 
@@ -222,7 +244,7 @@ namespace sensusProducts.ViewModel
             }
         }
 
-        private void RefreshProductsList()
+        public void RefreshProductsList()
         {
             products = productService.LoadProductsFromDB();
             GenerateProductList();
@@ -251,7 +273,16 @@ namespace sensusProducts.ViewModel
         private void View_Product(object sender, RoutedEventArgs e, Product product)
         {
             // Handle the click event for viewing product details
-            Debug.Write(product.Id);
+
+            // Create the ProductDetailsViewModel with the selected product
+            ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel(product, this);
+
+            // Create a new window for displaying the product details
+            ProductDetailsView productDetailsView = new ProductDetailsView(productDetailsViewModel);
+
+            ViewProductFrame.Navigate(productDetailsView);
+
+            MainGrid.Visibility = Visibility.Hidden;
         }
 
         //filter the product list by checkbox commands
@@ -299,7 +330,12 @@ namespace sensusProducts.ViewModel
             }
         }
 
-        
+        public void GoBackToMain()
+        {
+            // Navigate back to the previous view
+            ViewProductFrame.Content = null;
+            MainGrid.Visibility = Visibility.Visible; // Show the main grid again
+        }
 
         #endregion
 

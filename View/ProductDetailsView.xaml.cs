@@ -9,15 +9,13 @@ using System.Windows.Controls;
 
 namespace sensusProducts.View
 {
-    public partial class HomePageView : Window
+    public partial class ProductDetailsView:Page
     {
-        public HomePageView()
+
+        public ProductDetailsView(ProductDetailsViewModel productDetailsViewModel)
         {
             InitializeComponent();
-
-            HomePageViewModel viewModel = new HomePageViewModel(ProductList, viewProductFrame, MainGrid);
-            DataContext = viewModel;
-            
+            this.DataContext = productDetailsViewModel;
         }
     }
 }

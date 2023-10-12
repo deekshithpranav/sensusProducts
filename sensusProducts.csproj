@@ -68,7 +68,6 @@
     <Compile Include="Service\IProductService.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
     <Compile Include="ViewModel\Commands\AddProductCommand.cs" />
-    <Compile Include="ViewModel\Helpers\InverseBooleanConverter.cs" />
     <Compile Include="ViewModel\HomePageViewModel.cs" />
     <Compile Include="ViewModel\ProductDetailsViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -78,6 +77,9 @@
     <Compile Include="ViewModel\Helpers\OptionConverter.cs" />
     <Compile Include="View\HomePageView.xaml.cs">
       <DependentUpon>HomePageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductDetailsView.xaml.cs">
+      <DependentUpon>ProductDetailsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>

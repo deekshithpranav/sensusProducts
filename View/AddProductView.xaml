@@ -13,7 +13,7 @@
         <vm:AddProductViewModel x:Key="vm"/>
         <xm:OptionConverter x:Key="OptionConverter" />
     </Window.Resources>
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
     <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -25,28 +25,28 @@
                          IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" />
             <RadioButton Content="Enter Manually" GroupName="insertType"
                          IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" />
-            <ContentControl Grid.Row="1">
-                <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SelectedOption}" Value="Source">
-                                <Setter Property="Content">
-                                    <Setter.Value >
-                                        <!-- Content for Source option -->
-                                        <StackPanel DataContext="{StaticResource vm}">
-                                            <TextBlock Text="Enter URL:" />
-                                            <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
-                                            <Button Command="{Binding addProductCommand}" Content="Submit" 
+                <ContentControl Grid.Row="1">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedOption}" Value="Source">
+                                    <Setter Property="Content">
+                                        <Setter.Value >
+                                            <!-- Content for Source option -->
+                                            <StackPanel DataContext="{StaticResource vm}">
+                                                <TextBlock Text="Enter URL:" />
+                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
+                                                <Button Command="{Binding addProductCommand}" Content="Submit" 
                                                 IsEnabled="{Binding IsSubmitButtonEnabled}" />
-                                        </StackPanel>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SelectedOption}" Value="Manual">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <!-- Content for Manual option -->
-                                        
+                                            </StackPanel>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedOption}" Value="Manual">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <!-- Content for Manual option -->
+
                                             <Grid Margin="20">
                                                 <StackPanel DataContext="{StaticResource vm}">
                                                     <!-- Product Name -->
@@ -104,16 +104,15 @@
                                                      />
                                                 </StackPanel>
                                             </Grid>
-                                        
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-            </ContentControl>
-            
-        </StackPanel>
+
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </StackPanel>
     </Grid>
     </ScrollViewer>
 </Window>

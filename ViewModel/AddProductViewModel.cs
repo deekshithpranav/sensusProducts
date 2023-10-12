@@ -200,9 +200,8 @@ namespace sensusProducts.ViewModel
                     // Handle exceptions, e.g., invalid URL
                     MessageBox.Show("Invalid URL: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                ProductLink = string.Empty;
 
-                // Show a success message (redundant, consider removing)
-                MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -225,9 +224,15 @@ namespace sensusProducts.ViewModel
                 // Add the manual product to the service
                 productService.AddProduct(product);
 
-                // Clear the product link field
-                ProductLink = string.Empty;
-
+                UtilityTypesList = null;
+                ProductImgLinks = null;
+                ProductName = string.Empty;
+                ProductDescription = string.Empty;
+                ProductFindDocLink = string.Empty;
+                ProductFeatures = null;
+                ProductDocLink = string.Empty;
+                    
+                    
                 // Show a success message
                 MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
