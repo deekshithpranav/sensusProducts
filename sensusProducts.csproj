@@ -38,9 +38,6 @@
     <Reference Include="DynamicData, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DynamicData.8.0.2\lib\net462\DynamicData.dll</HintPath>
     </Reference>
-    <Reference Include="FirstFloor.ModernUI, Version=1.0.9.0, Culture=neutral, PublicKeyToken=bc9b0c37bf06c6a9, processorArchitecture=MSIL">
-      <HintPath>packages\ModernUI.WPF.1.0.9\lib\net45\FirstFloor.ModernUI.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.54.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>packages\HtmlAgilityPack.1.11.54\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -158,6 +155,12 @@
     <Resource Include="Resources\UtilityTypeImages\Electric.png" />
     <Resource Include="Resources\UtilityTypeImages\Water.png" />
     <Resource Include="Resources\UtilityTypeImages\Gas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Logo\Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

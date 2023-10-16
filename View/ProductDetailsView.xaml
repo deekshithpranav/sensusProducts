@@ -13,7 +13,7 @@
     
     
 
-    <Grid Background="Red">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
@@ -28,7 +28,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel HorizontalAlignment="Left" Grid.Row="0">
-                <Button HorizontalAlignment="Left" Content="Back" Width="50" Command="{Binding NavigateBack}"/>
+                <Button HorizontalAlignment="Left" Content="Back" Width="50" Command="{Binding NavigateBack}" Margin="15"/>
+                <StackPanel Name="UtilityList">
+                    
+                </StackPanel>
                 <TextBlock  TextWrapping="Wrap"  FontSize="20" FontWeight="Bold" Text="{Binding ProductName}" Grid.Row ="0" Margin="20,20,20,0" />
             </StackPanel>
              <Image  Grid.Row="1" Source="{Binding MainImageSource}" Width="300"  />
@@ -45,7 +48,7 @@
         </Grid>
         
         <Grid Grid.Column="1" VerticalAlignment="Center">
-            <StackPanel  >
+            
                 <TabControl x:Name="tabControl" >
                     <TabItem Width="149" Height="35" Margin="10,0,0,0">
                         <TabItem.Header>
@@ -66,7 +69,7 @@
                              <StackPanel Width="500" HorizontalAlignment="Left">
                          <!-- Content for the "Features" tab -->
                          <TextBlock Margin="10">
-                          <Hyperlink Command="{Binding FindDocURLCommand}">Find Product Documents</Hyperlink>
+                          <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
                          </TextBlock>
                          <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
                          <TextBlock Margin="10">
@@ -77,7 +80,7 @@
                     </TabItem>
                 </TabControl>
 
-            </StackPanel>
+            
 
 
         </Grid>

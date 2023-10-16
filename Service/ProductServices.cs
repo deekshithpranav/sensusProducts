@@ -25,7 +25,7 @@ namespace sensusProducts.Service
                  FROM productIDs
                  ORDER BY PID DESC;
             ";
-            int productID;
+            int productID=0;
             try
             {
                 // Create a SqlConnection
@@ -37,7 +37,7 @@ namespace sensusProducts.Service
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Execute the SQL command to create the table
-                        object str = command.ExecuteScalar();
+                        object str = command.ExecuteScalar() == null? 0: command.ExecuteScalar();
                         productID = (int)str + 1;
 
                     }

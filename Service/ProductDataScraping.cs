@@ -2,6 +2,7 @@
 using sensusProducts.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -33,6 +34,43 @@ namespace sensusProducts.Service
                     var titleNode = htmlDoc.DocumentNode.SelectSingleNode("//section[@class='headline-bluebar']//h1");
                     string titleText = titleNode.InnerText;
                     titleText = HtmlEntity.DeEntitize(titleText);
+
+                    //check if the product is already present in db
+
+                    string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+
+                    // SQL query to check if the title exists in the database
+                    string query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
+
+                    try
+                    {
+                        using (SqlConnection connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+
+                            using (SqlCommand cmd = new SqlCommand(query, connection))
+                            {
+                                cmd.Parameters.AddWithValue("@Title", titleText);
+                                int count = (int)cmd.ExecuteScalar();
+
+                                if (count > 0)
+                                {
+                                    // Product is already present in the database
+                                    System.Windows.Forms.MessageBox.Show("Product is already present in the database");
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle any exceptions
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+
+
+
+
                     product.Name = titleText;
                     Console.WriteLine("Title: " + titleText);
 
@@ -95,6 +133,7 @@ namespace sensusProducts.Service
                             string findDocLink = firstChild.GetAttributeValue("href", "");
                             Console.WriteLine("Find Documents Link: " + findDocLink);
                             featuresNode.RemoveChild(firstChild);
+                            product.FindDocLink = findDocLink;
                         }
                         List<string> features = new List<string>();
                         // Iterate through text nodes within the featuresNode

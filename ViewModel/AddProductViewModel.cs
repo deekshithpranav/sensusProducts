@@ -189,10 +189,11 @@ namespace sensusProducts.ViewModel
                     Product product = await scrapData.ScrapData(ProductLink);
 
                     // Add the scraped product to the service
-                    productService.AddProduct(product);
-
-                    // Show a success message
-                    MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if(product != null)
+                    {
+                        productService.AddProduct(product);
+                        MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -249,6 +250,36 @@ namespace sensusProducts.ViewModel
                     DocLink = ProductDocLink,
                     ImgLinks = ProductImgLinks
                 };
+
+
+                // SQL query to check if the title exists in the database
+                query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
+
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        using (SqlCommand cmd = new SqlCommand(query, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Title", product.Name);
+                            int count = (int)cmd.ExecuteScalar();
+
+                            if (count > 0)
+                            {
+                                // Product is already present in the database
+                                System.Windows.Forms.MessageBox.Show("Product is already present in the database");
+                                return;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    Console.WriteLine("Error: " + ex.Message);
+                }
 
                 // Add the manual product to the service
                 productService.AddProduct(product);

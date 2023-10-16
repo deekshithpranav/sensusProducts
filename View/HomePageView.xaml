@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
-        Title="HomePageView" MinHeight="450" MinWidth="800">
+        Icon="../Resources/Logo/Icon.ico"
+        Title="Sensus Products" MinHeight="450" MinWidth="800">
 
     <Grid >
         <Grid  Name="MainGrid">

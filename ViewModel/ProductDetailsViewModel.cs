@@ -13,6 +13,8 @@ using System.Windows.Controls;
 using sensusProducts.Service;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
+using System.Reflection;
+using System.IO;
 
 namespace sensusProducts.ViewModel
 {
@@ -86,12 +88,18 @@ namespace sensusProducts.ViewModel
 
         public void FindDocURL()
         {
-            System.Diagnostics.Process.Start(fdURL);
+            if (fdURL != "")
+            {
+                System.Diagnostics.Process.Start(fdURL);
+            }
         }
 
         public void ProductDocURL()
         {
-            System.Diagnostics.Process.Start(pdURL);
+            if(pdURL != "")
+            {
+                System.Diagnostics.Process.Start(pdURL);
+            }
         }
         public ICommand FindDocURLCommand { get; private set; }
         public ICommand ProductDocURLCommand { get; private set; }
@@ -136,6 +144,7 @@ namespace sensusProducts.ViewModel
         }
 
         public StackPanel ProductsGallery { get; set; }
+        public StackPanel UtilityList { get; set; }
         #endregion
 
 
@@ -175,18 +184,30 @@ namespace sensusProducts.ViewModel
             ViewProductFrame.Navigate(updateProductView);
         }
 
-
+        //generate utility list images 
+        public void GenerateUtilityListImages()
+        {
+            UtilityList.Orientation = Orientation.Horizontal;
+            UtilityList.Margin = new Thickness(20, 20, 0, 10);
+            string baseDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            string projectDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..\\..\\"));
+            foreach (UtilityType utilityType in product.UtilityTypes)
+            {
+                string utype = utilityType.ToString();
+                Image utilityImage = new Image();
+                utilityImage.Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png"));
+                utilityImage.Height = 25;
+                UtilityList.Children.Add(utilityImage);
+            }
+        }
 
         //gallery
         public void GenerateGallery()
         {
-            List<string> Images = new List<string>() { "https://sensusglobal.wpenginepowered.com/wp-content/uploads/EasyLink_FrontTop.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/ally-water-meter-right-side-sensus.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/sensus-auto-adjust-turbo-meter-product-2.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/fieldlogic-hand-held-device-product.jpg" };
-
-            
 
             foreach (var item in product.ImgLinks)
             {
-                if (Images.IndexOf(item) == 0)
+                if (product.ImgLinks.IndexOf(item) == 0)
                 {
                     Image image = new Image()
                     {
@@ -201,7 +222,7 @@ namespace sensusProducts.ViewModel
                     image.MouseLeftButtonDown += ShowImage;
                     ProductsGallery.Children.Add(image);
                 }
-                else if (Images.IndexOf(item) == Images.Count - 1)
+                else if (product.ImgLinks.IndexOf(item) == product.ImgLinks.Count - 1)
                 {
                     Image image = new Image()
                     {

@@ -21,7 +21,9 @@ namespace sensusProducts.View
             DataContext = productDetailsViewModel;
             
             productDetailsViewModel.ProductsGallery = productsGallery;
+            productDetailsViewModel.UtilityList = UtilityList;
             productDetailsViewModel.GenerateGallery();
+            productDetailsViewModel.GenerateUtilityListImages();
         }
     }
 }
