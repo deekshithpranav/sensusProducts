@@ -12,12 +12,22 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using sensusProducts.ViewModel.Commands;
 using sensusProducts.ViewModel.Helpers;
+using System.Data.SqlClient;
 
 namespace sensusProducts.ViewModel
 {
     public class AddProductViewModel : INotifyPropertyChanged
     {
-        #region 
+        // Constructor
+        public AddProductViewModel()
+        {
+            // Initialize productService and addProductCommand
+            productService = new ProductServices();
+            AddProductCommand = new AddproductCommand(Add_Product);
+            IsSubmitButtonEnabled = false;
+            ImageTextBoxes = new ObservableCollection<ImageTextBox>();
+        }
+        #region Properties
 
         // Event handler for property change notifications
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,7 +36,7 @@ namespace sensusProducts.ViewModel
         public OptionConverter optionConverter;
 
         // Command for adding a product
-        public ICommand addProductCommand { get; }
+        public ICommand AddProductCommand { get; }
 
         // Service for managing product data
         private IProductService productService;
@@ -151,17 +161,6 @@ namespace sensusProducts.ViewModel
 
         #endregion
 
-        // Constructor
-        [Obsolete]
-        public AddProductViewModel()
-        {
-            // Initialize productService and addProductCommand
-            productService = new ProductServices();
-            addProductCommand = new AddproductCommand(Add_Product);
-            IsSubmitButtonEnabled = false;
-            ImageTextBoxes = new ObservableCollection<ImageTextBox>();
-        }
-
         // Method for handling property change events
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -209,9 +208,39 @@ namespace sensusProducts.ViewModel
                 UtilityTypesList = GetCheckedUtilityTypes();
                 ProductImgLinks = GetImgLinks();
 
-                // Create a new product object
+                string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+                string query = @"
+                 SELECT TOP 1 PID
+                 FROM productIDs
+                 ORDER BY PID DESC;
+            ";
+                int productID = 0;
+                try
+                {
+                    // Create a SqlConnection
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        // Create a SqlCommand
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            // Execute the SQL command to create the table
+                            object str = command.ExecuteScalar();
+                            productID = (int)str + 1;
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
+              // Create a new product object
                 Product product = new Product
                 {
+                    Id = productID,
                     UtilityTypes = UtilityTypesList,
                     Name = ProductName,
                     Description = ProductDescription,
@@ -231,8 +260,8 @@ namespace sensusProducts.ViewModel
                 ProductFindDocLink = string.Empty;
                 ProductFeatures = null;
                 ProductDocLink = string.Empty;
-                    
-                    
+
+
                 // Show a success message
                 MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }

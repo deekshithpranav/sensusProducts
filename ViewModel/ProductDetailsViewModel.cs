@@ -11,6 +11,8 @@ using sensusProducts.Model;
 using System.Windows;
 using System.Windows.Controls;
 using sensusProducts.Service;
+using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
 
 namespace sensusProducts.ViewModel
 {
@@ -22,21 +24,27 @@ namespace sensusProducts.ViewModel
 
         }
 
-        public ProductDetailsViewModel(Product product, HomePageViewModel homePageViewModel)
+        public ProductDetailsViewModel(Product product, HomePageViewModel homePageViewModel, Frame ViewProductFrame)
         {
             FindDocURLCommand = new RelayCommand(FindDocURL);
             ProductDocURLCommand = new RelayCommand(ProductDocURL);
             DeleteProductCommand = new RelayCommand(deleteProduct);
+            UpdateProductCommand = new RelayCommand(updateProduct);
             NavigateBack = new RelayCommand(goBack);
             this.homePageViewModel = homePageViewModel;
             this.product = product;
+            this.ViewProductFrame = ViewProductFrame;
             initializeParams();
         }
+
+
 
         #region Properties
 
         Product product;
 
+
+        Frame ViewProductFrame { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         ProductServices productServices = new ProductServices();
         public string fdURL { get; set; }
@@ -92,10 +100,42 @@ namespace sensusProducts.ViewModel
 
         HomePageViewModel homePageViewModel { get; }
 
-        public ICommand UpdateProductCommand;
+        public ICommand UpdateProductCommand { get; private set; }
         public ICommand DeleteProductCommand { get; private set; }
-    
 
+        List<Image> ImageObjects = new List<Image>();
+
+        private ObservableCollection<string> _imageSources;
+
+        public ObservableCollection<string> ImageSources
+        {
+            get { return _imageSources; }
+            set
+            {
+                if (_imageSources != value)
+                {
+                    _imageSources = value;
+                    OnPropertyChanged(nameof(ImageSources));
+                }
+            }
+        }
+
+        private string _mainImageSource;
+
+        public string MainImageSource
+        {
+            get { return _mainImageSource; }
+            set
+            {
+                if (_mainImageSource != value)
+                {
+                    _mainImageSource = value;
+                    OnPropertyChanged(nameof(MainImageSource));
+                }
+            }
+        }
+
+        public StackPanel ProductsGallery { get; set; }
         #endregion
 
 
@@ -106,7 +146,9 @@ namespace sensusProducts.ViewModel
             pdURL = product.DocLink;
             ProductDescription = product.Description;
             ProductFeatures = product.Features;
-
+            ImageSources = new ObservableCollection<string>();
+            
+            MainImageSource = product.ImgLinks[0];
         }
 
         
@@ -114,6 +156,7 @@ namespace sensusProducts.ViewModel
         public void goBack()
         {
             homePageViewModel.GoBackToMain();
+            
         }
 
         public void deleteProduct()
@@ -122,6 +165,111 @@ namespace sensusProducts.ViewModel
             goBack();
             homePageViewModel.RefreshProductsList();
         }
+
+        private void updateProduct()
+        {
+           UpdateProductView updateProductView = new UpdateProductView();
+           UpdateProductViewModel updateProductViewModel = new UpdateProductViewModel(product, homePageViewModel);
+           updateProductView.DataContext = updateProductViewModel;
+            updateProductView.InitializeComponent();
+            ViewProductFrame.Navigate(updateProductView);
+        }
+
+
+
+        //gallery
+        public void GenerateGallery()
+        {
+            List<string> Images = new List<string>() { "https://sensusglobal.wpenginepowered.com/wp-content/uploads/EasyLink_FrontTop.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/ally-water-meter-right-side-sensus.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/sensus-auto-adjust-turbo-meter-product-2.jpg", "https://sensusglobal.wpenginepowered.com/wp-content/uploads/fieldlogic-hand-held-device-product.jpg" };
+
+            
+
+            foreach (var item in product.ImgLinks)
+            {
+                if (Images.IndexOf(item) == 0)
+                {
+                    Image image = new Image()
+                    {
+                        Height = 60,
+                        Margin = new Thickness(20, 0, 10, 0),
+                        Source = new BitmapImage(new Uri(item)),
+                        Opacity = 1,
+                    };
+
+                    ImageObjects.Add(image);
+                    image.MouseLeftButtonDown += ChangeOpacity;
+                    image.MouseLeftButtonDown += ShowImage;
+                    ProductsGallery.Children.Add(image);
+                }
+                else if (Images.IndexOf(item) == Images.Count - 1)
+                {
+                    Image image = new Image()
+                    {
+                        Height = 60,
+                        Margin = new Thickness(10, 0, 20, 0),
+                        Source = new BitmapImage(new Uri(item)),
+                        Opacity = 0.5
+                    };
+
+                    ImageObjects.Add(image);
+                    image.MouseLeftButtonDown += ChangeOpacity;
+                    image.MouseLeftButtonDown += ShowImage;
+                    ProductsGallery.Children.Add(image);
+                }
+                else
+                {
+                    Image image = new Image()
+                    {
+                        Height = 60,
+                        Margin = new Thickness(10, 0, 10, 0),
+                        Source = new BitmapImage(new Uri(item)),
+                        Opacity = 0.5
+                    };
+
+                    ImageObjects.Add(image);
+                    image.MouseLeftButtonDown += ChangeOpacity;
+                    image.MouseLeftButtonDown += ShowImage;
+                    ProductsGallery.Children.Add(image);
+                }
+            }
+            ImageObjects.FirstOrDefault().Opacity = 1;
+
+        }
+
+        private void ShowImage(object sender, MouseButtonEventArgs e)
+        {
+            string uri = string.Empty;
+
+            if (sender is Image image)
+            {
+                uri = image.Source.ToString();
+                image.Opacity = 1;
+            }
+
+            MainImageSource = uri;
+        }
+
+        private void ChangeOpacity(object sender, MouseButtonEventArgs e)
+        {
+            foreach (var item in ImageObjects)
+            {
+                item.Opacity = 0.5;
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in ImageObjects)
+            {
+                item.MouseLeftButtonDown -= ShowImage;
+                item.MouseLeftButtonDown -= ChangeOpacity;
+            }
+        }
+
+
+
+
+
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

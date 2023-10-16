@@ -40,7 +40,7 @@ namespace sensusProducts.ViewModel
 
         public HomePageViewModel()
         {
-
+            productService = new ProductServices();
         }
 
         #region Properties
@@ -148,7 +148,14 @@ namespace sensusProducts.ViewModel
             // Create and show the "AddProductView" window
             var addProductWindow = new AddProductView();
             addProductWindow.InitializeComponent();
+            addProductWindow.Closing += AddProductWindow_Closing;
             addProductWindow.Show();
+
+        }
+
+        private void AddProductWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            RefreshProductsList();
         }
 
         private Border GenerateGridElement(Product product)
@@ -166,7 +173,10 @@ namespace sensusProducts.ViewModel
 
             // Create an Image control for displaying the product image
             Image productImage = new Image();
-            productImage.Source = new BitmapImage(new Uri(product.ImgLinks[0]));
+            if(product.ImgLinks.Count >0 )
+            {
+                productImage.Source = new BitmapImage(new Uri(product.ImgLinks[0]));
+            }
             productImage.Height = 150;
 
             // Create a TextBlock for the product type
@@ -258,7 +268,7 @@ namespace sensusProducts.ViewModel
             foreach (Product product in products)
             {
                 string str = product.Name;
-                if (str.StartsWith(SearchProduct))
+                if (str.ToLower().StartsWith(SearchProduct.ToLower()))
                 {
                     matchingProductList.Add(product);
                 }
@@ -274,11 +284,9 @@ namespace sensusProducts.ViewModel
         {
             // Handle the click event for viewing product details
 
-            // Create the ProductDetailsViewModel with the selected product
-            ProductDetailsViewModel productDetailsViewModel = new ProductDetailsViewModel(product, this);
 
             // Create a new window for displaying the product details
-            ProductDetailsView productDetailsView = new ProductDetailsView(productDetailsViewModel);
+            ProductDetailsView productDetailsView = new ProductDetailsView(product, this, ViewProductFrame);
 
             ViewProductFrame.Navigate(productDetailsView);
 
@@ -335,6 +343,7 @@ namespace sensusProducts.ViewModel
             // Navigate back to the previous view
             ViewProductFrame.Content = null;
             MainGrid.Visibility = Visibility.Visible; // Show the main grid again
+            
         }
 
         #endregion

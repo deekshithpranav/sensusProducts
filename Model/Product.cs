@@ -24,8 +24,6 @@ namespace sensusProducts.Model
 
         public List<UtilityType> UtilityTypes { get; set; }
 
-        public string ImgLink { get; set; }
-
         public Product() { 
         
         }

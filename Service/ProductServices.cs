@@ -21,7 +21,9 @@ namespace sensusProducts.Service
 
             string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
             string query = @"
-                 SELECT COUNT(*) FROM productIDs;
+                 SELECT TOP 1 PID
+                 FROM productIDs
+                 ORDER BY PID DESC;
             ";
             int productID;
             try
@@ -139,7 +141,7 @@ namespace sensusProducts.Service
                         Debug.Write(rowsAffected);
                     }
 
-                    query = "DELETE FROM PUtiliy WHERE PID = @IntValue";
+                    query = "DELETE FROM PUtility WHERE PID = @IntValue";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         // Provide parameter values
@@ -281,9 +283,103 @@ namespace sensusProducts.Service
             return products;
         }
 
-        public void UpdateProduct(Product product)
+        public void UpdateProduct(Product product, int OldProductID)
         {
-            
+            string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+            string query = @"
+                UPDATE productIDs
+                SET PName = @StringValue
+                WHERE PID = @IntValue;
+            ";
+            try
+            {
+                // Create a SqlConnection
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Create a SqlCommand
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@IntValue", OldProductID);
+                        command.Parameters.AddWithValue("@StringValue", product.Name);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+                    query = @"
+                        UPDATE PDetails
+                        SET PDesc = @StringValue,
+                        PFeatures = @StringValue2,
+                        DocLink = @StringValue3,
+                        FindDocLink = @StringValue4
+                        WHERE PID = @IntValue;
+                    ";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@IntValue", OldProductID);
+                        command.Parameters.AddWithValue("@StringValue", product.Name);
+                        command.Parameters.AddWithValue("@StringValue2", product.Features);
+                        command.Parameters.AddWithValue("@StringValue3", product.DocLink);
+                        command.Parameters.AddWithValue("@StringValue4", product.FindDocLink);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+
+                    //delete the image data in DB
+                    query = "DELETE FROM ProductImgLinks WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Provide parameter values
+                        command.Parameters.AddWithValue("@IntValue", OldProductID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+                    //delete the utility data in DB
+                    query = "DELETE FROM PUtility WHERE PID = @IntValue";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IntValue", OldProductID);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        Debug.Write(rowsAffected);
+                    }
+
+                    query = "INSERT INTO PUtility (PID, Utility) VALUES (@IntValue, @StringValue)";
+                    foreach (var utility in product.UtilityTypes)
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+
+                            command.Parameters.AddWithValue("@IntValue", OldProductID);
+                            command.Parameters.AddWithValue("@StringValue", utility.ToString());
+                            int rowsAffected = command.ExecuteNonQuery();
+                            Debug.Write(rowsAffected);
+                        }
+                    }
+                    query = "INSERT INTO ProductImgLinks (PID, ImgLink) VALUES (@IntValue, @StringValue)";
+                    foreach (var imgLink in product.ImgLinks)
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                            command.Parameters.AddWithValue("@IntValue", OldProductID);
+                            command.Parameters.AddWithValue("@StringValue", imgLink.ToString());
+                            int rowsAffected = command.ExecuteNonQuery();
+                            Debug.Write(rowsAffected);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 

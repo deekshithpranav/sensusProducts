@@ -7,12 +7,15 @@
         xmlns:xm="clr-namespace:sensusProducts.ViewModel.Helpers"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
-        Title="AddProductView" Height="450" Width="800">
+        Title="AddProductView" MinHeight="450" MinWidth="800">
 
     <Window.Resources>
         <vm:AddProductViewModel x:Key="vm"/>
         <xm:OptionConverter x:Key="OptionConverter" />
+
     </Window.Resources>
+    
+    
     <ScrollViewer VerticalScrollBarVisibility="Auto">
     <Grid DataContext="{StaticResource vm}">
         <Grid.ColumnDefinitions>
@@ -36,7 +39,7 @@
                                             <StackPanel DataContext="{StaticResource vm}">
                                                 <TextBlock Text="Enter URL:" />
                                                 <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
-                                                <Button Command="{Binding addProductCommand}" Content="Submit" 
+                                                <Button Command="{Binding AddProductCommand}" Content="Submit" 
                                                 IsEnabled="{Binding IsSubmitButtonEnabled}" />
                                             </StackPanel>
                                         </Setter.Value>
@@ -51,7 +54,7 @@
                                                 <StackPanel DataContext="{StaticResource vm}">
                                                     <!-- Product Name -->
                                                     <TextBlock Text="Product Name:" />
-                                                    <TextBox Name="productNameTextBox" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
+                                                    <TextBox  Name="productNameTextBox" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
 
                                                     <!-- Product Description -->
                                                     <TextBlock Text="Product Description:" />
@@ -100,7 +103,7 @@
                                                     </ItemsControl>
 
                                                     <!-- Submit Button -->
-                                                    <Button Command="{Binding addProductCommand}" Content="Submit" 
+                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" 
                                                      />
                                                 </StackPanel>
                                             </Grid>

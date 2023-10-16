@@ -11,7 +11,7 @@ namespace sensusProducts.Service
     {
         void AddProduct(Product product);
         List<Product> LoadProductsFromDB();
-        void UpdateProduct(Product product);
+        void UpdateProduct(Product product, int OldProductID);
         void DeleteProductInDB(int PID);
     }
 }

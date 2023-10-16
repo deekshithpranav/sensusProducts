@@ -138,17 +138,14 @@ namespace sensusProducts.Service
 
                             if (!string.IsNullOrEmpty(img))
                             {
-                                imgHyperLinkList.Add(img);
+                                string pattern = @"-(\d{2,3}x\d{2,3})(\.\w+)$";
+                                // Use Regex.Replace to remove the resolution from the URL
+                                string fullsizeimage = Regex.Replace(img, pattern, "$2");
+                                Console.WriteLine(fullsizeimage);
+                                imgHyperLinkList.Add(fullsizeimage);
                             }
                         }
 
-                        //modifying the hyperlink to have high resolution images
-                        foreach (var item in imgHyperLinkList)
-                        {
-                            Console.WriteLine("Multiple Images links: ");
-                            var fullsizeimage = item.Substring(0, item.Length - 12) + ".jpg";
-                            Console.WriteLine(fullsizeimage);
-                        }
                     }
 
                     // single-display-image product

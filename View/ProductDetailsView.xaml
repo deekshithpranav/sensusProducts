@@ -7,52 +7,73 @@
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
         mc:Ignorable="d"
-        Title="ProductDetailsView" >
+        Title="ProductDetailsView" 
+      MinHeight="450" MinWidth="800"
+      >
+    
+    
 
-    <Grid>
+    <Grid Background="Red">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="39*" />
-            <ColumnDefinition Width="135*"/>
-            <ColumnDefinition Width="48*"/>
-            <ColumnDefinition Width="299*" />
-            <ColumnDefinition Width="80*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel HorizontalAlignment="Left" Grid.Row="0">
+                <Button HorizontalAlignment="Left" Content="Back" Width="50" Command="{Binding NavigateBack}"/>
+                <TextBlock  TextWrapping="Wrap"  FontSize="20" FontWeight="Bold" Text="{Binding ProductName}" Grid.Row ="0" Margin="20,20,20,0" />
+            </StackPanel>
+             <Image  Grid.Row="1" Source="{Binding MainImageSource}" Width="300"  />
+
+            <StackPanel  Margin="0,30,0,0" Height="60" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Name="productsGallery">
+                
+            </StackPanel>
+
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="1,0,0,0">
+                <Button Content="Edit" Width="54" Height="25" Margin="5,0,30,15" Command="{Binding UpdateProductCommand}"/>
+                <Button Content="Delete" Width="54" Height="25" Margin="0,0,0,15" Command="{Binding DeleteProductCommand}"/>
+            </StackPanel>
+        </Grid>
         
-
-        <TextBlock  Text="{Binding ProductName}" Grid.ColumnSpan="4" Margin="0,50,298,0"  FontSize="30"/>
-        <Button Grid.Column="0" Content="Back" Width="64" Height="35" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding NavigateBack}"/>
-
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Grid.Column="1" Margin="1,0,0,0" Grid.ColumnSpan="2">
-            <Button Content="Edit" Width="54" Height="25" Margin="5,0,30,15" Command="{Binding UpdateProductCommand}"/>
-            <Button Content="Delete" Width="54" Height="25" Margin="0,0,0,15" Command="{Binding DeleteProductCommand}"/>
-
-        </StackPanel>
-        <Grid Grid.Column="3" Grid.ColumnSpan="2">
+        <Grid Grid.Column="1" VerticalAlignment="Center">
             <StackPanel  >
                 <TabControl x:Name="tabControl" >
                     <TabItem Width="149" Height="35" Margin="10,0,0,0">
                         <TabItem.Header>
                             <TextBlock Text="Description" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <StackPanel Width="500" HorizontalAlignment="Left">
-                            <!-- Content for the "Description" tab -->
-                            <TextBlock TextAlignment="Justify" Text="{Binding ProductDescription}" TextWrapping="Wrap" />
-                        </StackPanel>
+                        <ScrollViewer>
+                            <StackPanel Width="500" HorizontalAlignment="Left">
+                                <!-- Content for the "Description" tab -->
+                                <TextBlock TextAlignment="Justify" Text="{Binding ProductDescription}" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
                     <TabItem Width="149" Height="35">
                         <TabItem.Header>
                             <TextBlock Text="Features"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <StackPanel Width="500" HorizontalAlignment="Left">
-                            <!-- Content for the "Features" tab -->
-                            <TextBlock Margin="10">
-                             <Hyperlink Command="{Binding FindDocURLCommand}">Find Product Documents</Hyperlink>
-                            </TextBlock>
-                            <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
-                            <TextBlock Margin="10">
-                            <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
+                        <ScrollViewer>
+                             <StackPanel Width="500" HorizontalAlignment="Left">
+                         <!-- Content for the "Features" tab -->
+                         <TextBlock Margin="10">
+                          <Hyperlink Command="{Binding FindDocURLCommand}">Find Product Documents</Hyperlink>
+                         </TextBlock>
+                         <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
+                         <TextBlock Margin="10">
+                         <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
+                         </TextBlock>
+                     </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
                 </TabControl>
 
