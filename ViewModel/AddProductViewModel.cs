@@ -19,6 +19,7 @@ namespace sensusProducts.ViewModel
     public class AddProductViewModel : INotifyPropertyChanged
     {
         // Constructor
+        [Obsolete]
         public AddProductViewModel()
         {
             // Initialize productService and addProductCommand

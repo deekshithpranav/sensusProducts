@@ -17,7 +17,8 @@
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" Background="#DEEFF4" >
+                
                 <Button  Command="{Binding OpenAddProductPageCommand}" Style="{DynamicResource PrimaryButtonStyle}" Height="28" Width="130" Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal" >
@@ -27,11 +28,11 @@
                     </Button.Content>
                 </Button>
 
-                <Label Content="Filter" FontWeight="Bold" FontSize="18"/>
+                <Label Content="Filter" FontWeight="Bold" FontSize="18" Margin="18,100,0,0"/>
                 <StackPanel Margin="10,0">
-                    <CheckBox Name="chkWater" Margin="5,10,0,0" Content="Water" FontSize="13" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
-                    <CheckBox Name="chkGas" Margin="5,10,0,0" Content="Gas" FontSize="13" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
-                    <CheckBox Name="chkElectric" Margin="5,10,0,0" Content="Electric" FontSize="13" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
+                    <CheckBox Name="chkWater" Margin="25,10,0,0" Content="Water" FontSize="13" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
+                    <CheckBox Name="chkGas" Margin="25,10,0,0" Content="Gas" FontSize="13" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
+                    <CheckBox Name="chkElectric" Margin="25,10,0,0" Content="Electric" FontSize="13" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
                 </StackPanel>
             </StackPanel>
             <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
@@ -44,8 +45,10 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
-                <TextBox Margin="30,50,30,10" Height="35" Width="auto" Style="{DynamicResource TextBoxStyle}" Tag="Search Product"  Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
 
+                <StackPanel Background="#E6F0F2">
+                    <TextBox  Margin="30,100,30,10" Height="35" Width="auto" Style="{DynamicResource TextBoxStyle}" Tag="Search Product"   Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
+                </StackPanel>
                 <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
 
                 </ScrollViewer>

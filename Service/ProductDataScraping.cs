@@ -32,6 +32,11 @@ namespace sensusProducts.Service
 
                     // Extract product title 
                     var titleNode = htmlDoc.DocumentNode.SelectSingleNode("//section[@class='headline-bluebar']//h1");
+                    if(titleNode == null)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Provide a proper Sensus product URL");
+                        return null;
+                    }
                     string titleText = titleNode.InnerText;
                     titleText = HtmlEntity.DeEntitize(titleText);
 

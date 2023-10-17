@@ -7,7 +7,8 @@
         xmlns:xm="clr-namespace:sensusProducts.ViewModel.Helpers"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
-        Title="AddProductView" MinHeight="450" MinWidth="800">
+        Icon="../Resources/Logo/Icon.ico"
+    Title="Sensus Products" MinHeight="630" MinWidth="1100">
 
     <Window.Resources>
         <vm:AddProductViewModel x:Key="vm"/>
@@ -23,11 +24,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.RowSpan="2">
-            <Label Name="TitleL" Content="Add Product" />
+            <Label Name="TitleL" Content="Add Product" FontSize="16" FontWeight="Medium" Margin="8"/>
             <RadioButton Content="Enter Source Link" GroupName="insertType"
-                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" />
+                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" Margin="20" FontSize="15" FontWeight="Medium"/>
             <RadioButton Content="Enter Manually" GroupName="insertType"
-                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" />
+                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" Margin="20" FontSize="15" FontWeight="Medium"/>
                 <ContentControl Grid.Row="1">
                     <ContentControl.Style>
                         <Style TargetType="ContentControl">
@@ -36,11 +37,11 @@
                                     <Setter Property="Content">
                                         <Setter.Value >
                                             <!-- Content for Source option -->
-                                            <StackPanel DataContext="{StaticResource vm}">
-                                                <TextBlock Text="Enter URL:" />
-                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" />
+                                            <StackPanel DataContext="{StaticResource vm}" Margin="20">
+                                                <TextBlock Text="Enter URL:" Margin="0,0,0,10" FontWeight="Medium" FontSize="13"/>
+                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
                                                 <Button Command="{Binding AddProductCommand}" Content="Submit" 
-                                                IsEnabled="{Binding IsSubmitButtonEnabled}" />
+                                                IsEnabled="{Binding IsSubmitButtonEnabled}" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25"/>
                                             </StackPanel>
                                         </Setter.Value>
                                     </Setter>
@@ -53,34 +54,34 @@
                                             <Grid Margin="20">
                                                 <StackPanel DataContext="{StaticResource vm}">
                                                     <!-- Product Name -->
-                                                    <TextBlock Text="Product Name:" />
-                                                    <TextBox  Name="productNameTextBox" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
+                                                    <TextBlock Text="Product Name:" FontWeight="Medium"/>
+                                                    <TextBox  Name="productNameTextBox" Text="{Binding ProductName}" Width="400" Margin="0,0,0,25" Style="{DynamicResource TextBoxStyle}"/>
 
                                                     <!-- Product Description -->
-                                                    <TextBlock Text="Product Description:" />
-                                                    <TextBox Name="productDescriptionTextBox" Text="{Binding ProductDescription}" Width="300" Height="100" Margin="0,0,0,10" />
+                                                    <TextBlock Text="Product Description:" FontWeight="Medium"/>
+                                                    <TextBox Name="productDescriptionTextBox" Text="{Binding ProductDescription}" Width="400" Height="150" Margin="0,0,0,25" Style="{DynamicResource TextBoxStyle}" TextWrapping="Wrap"/>
 
                                                     <!-- Product Features -->
-                                                    <TextBlock Text="Product Features:" />
-                                                    <TextBox Name="productFeaturesTextBox" Text="{Binding ProductFeatures}" Width="300" Height="100" Margin="0,0,0,10" />
+                                                    <TextBlock Text="Product Features:" FontWeight="Medium"/>
+                                                    <TextBox Name="productFeaturesTextBox" Text="{Binding ProductFeatures}" Width="400" Height="150" Margin="0,0,0,25" Style="{DynamicResource TextBoxStyle}" TextWrapping="Wrap"/>
 
                                                     <!-- Utility Types (Checkboxes) -->
-                                                    <TextBlock Text="Utility Types:" />
-                                                    <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" />
-                                                    <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" />
-                                                    <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" />
+                                                    <TextBlock Text="Utility Types:" FontWeight="Medium"/>
+                                                    <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="2,5,0,5"/>
+                                                    <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="2,0,0,5"/>
+                                                    <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="2,0,0,25"/>
 
 
                                                     <!-- Document Link -->
-                                                    <TextBlock Text="Document Link:" />
-                                                    <TextBox Text="{Binding ProductDocLink}" Name="documentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                                                    <TextBlock Text="Document Link:" FontWeight="Medium"/>
+                                                    <TextBox Text="{Binding ProductDocLink}" Name="documentLinkTextBox" Width="400" Margin="0,5,0,25" Style="{DynamicResource TextBoxStyle}"/>
 
                                                     <!-- Find Document Link -->
-                                                    <TextBlock Text="Find Document Link:" />
-                                                    <TextBox Text="{Binding ProductFindDocLink}" Name="findDocumentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                                                    <TextBlock Text="Find Document Link:" FontWeight="Medium"/>
+                                                    <TextBox Text="{Binding ProductFindDocLink}" Name="findDocumentLinkTextBox" Width="400" Margin="0,5,0,25" Style="{DynamicResource TextBoxStyle}"/>
 
                                                     <!-- Number of Image Links (Dropdown) -->
-                                                    <TextBlock Text="Number of Image Links:" />
+                                                    <TextBlock Text="Number of Image Links:" FontWeight="Medium"/>
                                                     <ComboBox Name="imageLinksCountComboBox" Width="100" Margin="0,0,0,10" 
                                                            SelectedItem="{Binding SelectedItemCount, Mode=TwoWay}" >
                                                         <ComboBoxItem Content="1" />
@@ -90,12 +91,11 @@
                                                         <ComboBoxItem Content="5" />
                                                     </ComboBox>
                                                     <!-- Image Links (variable number of TextBoxes based on user input) -->
-                                                    <TextBlock Text="Image Links:" />
                                                     <ItemsControl Name="imageLinksStackPanel" ItemsSource="{Binding ImageTextBoxes}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock Text="{Binding Label}" Margin="0,0,10,0" />
+                                                                    <TextBlock Text="{Binding Label}" Margin="0,2,10,0" />
                                                                     <ContentPresenter Content="{Binding TextBox}" />
                                                                 </StackPanel>
                                                             </DataTemplate>
@@ -103,8 +103,8 @@
                                                     </ItemsControl>
 
                                                     <!-- Submit Button -->
-                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" 
-                                                     />
+                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25" Margin="0,20,0,0" 
+                                                     FontWeight="Medium"/>
                                                 </StackPanel>
                                             </Grid>
 

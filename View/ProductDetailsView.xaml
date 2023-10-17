@@ -45,42 +45,39 @@
             </StackPanel>
         </Grid>
         
-        <Grid Grid.Column="1" VerticalAlignment="Center">
-            
-                <TabControl x:Name="tabControl" >
-                    <TabItem Width="149" Height="35" Margin="10,0,0,0">
+        <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border CornerRadius="10" >
+                <TabControl x:Name="tabControl"  Style="{DynamicResource TabControlStyle}"  >
+                    <TabItem Width="149" Height="35" Style="{DynamicResource TabItemStyle}">
                         <TabItem.Header>
                             <TextBlock Text="Description" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <ScrollViewer>
-                            <StackPanel Width="500" HorizontalAlignment="Left">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                            <StackPanel HorizontalAlignment="Left" Margin="0,5,20,0">
                                 <!-- Content for the "Description" tab -->
-                                <TextBlock TextAlignment="Justify" Text="{Binding ProductDescription}" TextWrapping="Wrap" />
+                                <TextBlock TextAlignment="Justify" Text="{Binding ProductDescription}" TextWrapping="Wrap" Margin="0,0,0,20"/>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
-                    <TabItem Width="149" Height="35">
+                    <TabItem Width="149" Height="35" Margin="1,0,0,0" Style="{DynamicResource TabItemStyle}">
                         <TabItem.Header>
                             <TextBlock Text="Features"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <ScrollViewer>
-                             <StackPanel Width="500" HorizontalAlignment="Left">
-                         <!-- Content for the "Features" tab -->
-                         <TextBlock Margin="10">
-                          <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
-                         </TextBlock>
-                         <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
-                         <TextBlock Margin="10">
-                         <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
-                         </TextBlock>
-                     </StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                            <StackPanel HorizontalAlignment="Left" Margin="0,5,20,20">
+                                <!-- Content for the "Features" tab -->
+                                <TextBlock Margin="10">
+          <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
+                                </TextBlock>
+                                <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
+                                <TextBlock Margin="10">
+         <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
                         </ScrollViewer>
                     </TabItem>
                 </TabControl>
-
-            
-
-
+            </Border>
         </Grid>
     </Grid>
 </Page>
