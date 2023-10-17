@@ -8,10 +8,8 @@
         xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
         mc:Ignorable="d"
         Title="ProductDetailsView" 
-      MinHeight="450" MinWidth="800"
-      >
-    
-    
+      MinHeight="630" MinWidth="800">
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,28 +20,28 @@
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
                 <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel HorizontalAlignment="Left" Grid.Row="0">
-                <Button HorizontalAlignment="Left" Content="Back" Width="50" Command="{Binding NavigateBack}" Margin="15"/>
+                <Button Style="{DynamicResource PrimaryButtonStyle}" HorizontalAlignment="Left" Content="Back" Height="25" Width="70" Command="{Binding NavigateBack}" Margin="15"/>
                 <StackPanel Name="UtilityList">
                     
                 </StackPanel>
-                <TextBlock  TextWrapping="Wrap"  FontSize="20" FontWeight="Bold" Text="{Binding ProductName}" Grid.Row ="0" Margin="20,20,20,0" />
+                <TextBlock  TextWrapping="Wrap"  FontSize="20" FontWeight="Bold" Text="{Binding ProductName}"  Margin="20,20,20,0" />
             </StackPanel>
-             <Image  Grid.Row="1" Source="{Binding MainImageSource}" Width="300"  />
+            <Image  Grid.Row="1" Source="{Binding MainImageSource}" />
 
             <StackPanel  Margin="0,30,0,0" Height="60" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Name="productsGallery">
                 
             </StackPanel>
 
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="1,0,0,0">
-                <Button Content="Edit" Width="54" Height="25" Margin="5,0,30,15" Command="{Binding UpdateProductCommand}"/>
-                <Button Content="Delete" Width="54" Height="25" Margin="0,0,0,15" Command="{Binding DeleteProductCommand}"/>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15,0,0,30">
+                <Button Content="Edit" Width="60" Height="25" Margin="5,0,30,15" Command="{Binding UpdateProductCommand}" Style="{DynamicResource SecondaryButtonStyle}"/>
+                <Button Content="Delete" Width="60" Height="25" Margin="0,0,0,15" Command="{Binding DeleteProductCommand}" Style="{DynamicResource SecondaryButtonStyle}"/>
             </StackPanel>
         </Grid>
         

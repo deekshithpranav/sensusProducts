@@ -10,22 +10,22 @@
 
 
     <Grid Margin="20">
-        <ScrollViewer Margin="0,50,0,0">
+        <ScrollViewer Margin="0,15,0,0">
 
             <StackPanel>
-                <Button Content="Back" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding NavigateBack}"/>
+                <Button Content="Back" Margin="0,0,0,20" Width="70" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" Command="{Binding NavigateBack}" Style="{DynamicResource SecondaryButtonStyle}"/>
 
                 <!-- Product Name -->
                 <TextBlock Text="Product Name:" />
-                <TextBox Name="productNameTextBox" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
+                <TextBox Name="productNameTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
 
                 <!-- Product Description -->
                 <TextBlock Text="Product Description:" />
-                <TextBox Name="productDescriptionTextBox" Text="{Binding ProductDescription}" Width="379" Height="142" Margin="0,0,0,10" />
+                <TextBox Name="productDescriptionTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductDescription}" Width="379" Height="142" Margin="0,0,0,10" TextWrapping="Wrap"/>
 
                 <!-- Product Features -->
                 <TextBlock Text="Product Features:" />
-                <TextBox Name="productFeaturesTextBox" Text="{Binding ProductFeatures}" Width="379" Height="142" Margin="0,0,0,10" />
+                <TextBox Name="productFeaturesTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductFeatures}" Width="379" Height="142" Margin="0,0,0,10" TextWrapping="Wrap"/>
 
                 <!-- Utility Types (Checkboxes) -->
                 <TextBlock Text="Utility Types:" />
@@ -36,11 +36,11 @@
 
                 <!-- Document Link -->
                 <TextBlock Text="Document Link:" />
-                <TextBox Text="{Binding ProductDocLink}" Name="documentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                <TextBox Text="{Binding ProductDocLink}"  Style="{DynamicResource TextBoxStyle}" Name="documentLinkTextBox" Width="300" Margin="0,0,0,10" />
 
                 <!-- Find Document Link -->
                 <TextBlock Text="Find Document Link:" />
-                <TextBox Text="{Binding ProductFindDocLink}" Name="findDocumentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                <TextBox Text="{Binding ProductFindDocLink}" Style="{DynamicResource TextBoxStyle}" Name="findDocumentLinkTextBox" Width="300" Margin="0,0,0,10" />
 
                 <!-- Number of Image Links (Dropdown) -->
                 <TextBlock Text="Number of Image Links:" />
@@ -66,7 +66,7 @@
                 </ItemsControl>
 
                 <!-- Submit Button -->
-                <Button Width="100" Command="{Binding submitProductCommand}" Margin="30" FontWeight="Bold"   Content="Update" 
+                <Button Width="100" Height="25" Style="{DynamicResource PrimaryButtonStyle}" Command="{Binding submitProductCommand}" Margin="30" FontWeight="Bold"   Content="Update" 
 />
             </StackPanel>
         </ScrollViewer>

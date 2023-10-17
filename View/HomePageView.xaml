@@ -7,7 +7,8 @@
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
         Icon="../Resources/Logo/Icon.ico"
-        Title="Sensus Products" MinHeight="450" MinWidth="800">
+        Title="Sensus Products" MinHeight="630" MinWidth="1100">
+
 
     <Grid >
         <Grid  Name="MainGrid">
@@ -17,31 +18,40 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Vertical">
-                <Button Command="{Binding OpenAddProductPageCommand}" Content="Add Product" Width="100" Margin="30" />
-                <Label Content="Filter" FontWeight="Bold"/>
+                <Button  Command="{Binding OpenAddProductPageCommand}" Style="{DynamicResource PrimaryButtonStyle}" Height="28" Width="130" Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Margin="0,0,8,4" Text="+" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
+                            <TextBlock Text="Add Product" FontWeight="Bold" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+                <Label Content="Filter" FontWeight="Bold" FontSize="18"/>
                 <StackPanel Margin="10,0">
-                    <CheckBox Name="chkWater" Content="Water" IsChecked="{Binding IsWaterChecked}"/>
-                    <CheckBox Name="chkGas" Content="Gas" IsChecked="{Binding IsGasChecked}"/>
-                    <CheckBox Name="chkElectric" Content="Electric" IsChecked="{Binding IsElectricChecked}"/>
+                    <CheckBox Name="chkWater" Margin="5,10,0,0" Content="Water" FontSize="13" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
+                    <CheckBox Name="chkGas" Margin="5,10,0,0" Content="Gas" FontSize="13" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
+                    <CheckBox Name="chkElectric" Margin="5,10,0,0" Content="Electric" FontSize="13" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
                 </StackPanel>
             </StackPanel>
             <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
             <Border Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
-            <Button Margin="0,10" Width="80" Command="{Binding RefreshProductListCommand}" Content="Refresh" VerticalAlignment="Bottom"/>
-
+            <StackPanel VerticalAlignment="Bottom" Grid.Column="0">
+                <Button Margin="10" Width="80" Height="25" Command="{Binding RefreshProductListCommand}" Style="{DynamicResource SecondaryButtonStyle}" Content="Refresh" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
-                <TextBox Margin="30,50,30,10" Height="25" Width="auto" Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
+                <TextBox Margin="30,50,30,10" Height="35" Width="auto" Style="{DynamicResource TextBoxStyle}" Tag="Search Product"  Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
 
                 <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
 
                 </ScrollViewer>
             </Grid>
         </Grid>
-        <Frame Name="viewProductFrame" NavigationUIVisibility="Hidden" JournalOwnership="OwnsJournal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+        <Frame Name="viewProductFrame" NavigationUIVisibility="Hidden" MinHeight="630" MinWidth="800" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
     </Grid>
     
 </Window>

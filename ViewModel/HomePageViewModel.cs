@@ -35,8 +35,10 @@ namespace sensusProducts.ViewModel
             this.MainGrid = MainGrid;
             // Generate the initial product list after getting the list from DB
             products = productService.LoadProductsFromDB();
+            CreateSecButStyle();
             GenerateProductList();
         }
+
 
         public HomePageViewModel()
         {
@@ -60,6 +62,8 @@ namespace sensusProducts.ViewModel
         public ScrollViewer ScrollViewer { get; }
 
         private string searchProduct;
+
+        Style secondaryButtonStyle = new Style(typeof(Button));
 
         List<Product> products;
 
@@ -170,10 +174,12 @@ namespace sensusProducts.ViewModel
             // Create a TextBlock for the product title
             TextBlock Title = new TextBlock();
             Title.Text = product.Name;
+            Title.FontWeight = FontWeights.Bold;
+            Title.FontSize = 16;
 
             // Create an Image control for displaying the product image
             Image productImage = new Image();
-            if(product.ImgLinks.Count >0 )
+            if (product.ImgLinks.Count > 0)
             {
                 productImage.Source = new BitmapImage(new Uri(product.ImgLinks[0]));
             }
@@ -191,7 +197,7 @@ namespace sensusProducts.ViewModel
                 Image utilityImage = new Image();
                 utilityImage.Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png"));
                 utilityImage.Height = 20;
-                utypePanel.Children.Add( utilityImage );
+                utypePanel.Children.Add(utilityImage);
             }
 
             //Another Grid to Split the 2nd column into two rows
@@ -208,6 +214,9 @@ namespace sensusProducts.ViewModel
             // Create a button to view product details
             Button button = new Button();
             button.Content = "View Product";
+            button.Style = (Style)Application.Current.FindResource("SecondaryButtonStyle");
+            button.Width = 130;
+            button.Height = 25;
             button.Click += (sender, e) => View_Product(sender, e, product);
 
             // Create a stack panel for product description
@@ -241,12 +250,13 @@ namespace sensusProducts.ViewModel
 
         private void GenerateProductList()
         {
+
             if (ScrollViewer.Content is Panel panel)
             {
                 panel.Children.Clear();
             }
 
-            
+
             // Add product elements to the scroll viewer
             foreach (Product product in products)
             {
@@ -261,7 +271,7 @@ namespace sensusProducts.ViewModel
         }
 
         //initially populate with all the products in database
-       
+
         private void findProducts()
         {
             List<Product> matchingProductList = new List<Product>();
@@ -298,7 +308,7 @@ namespace sensusProducts.ViewModel
         //water filter
         public void GenerateWaterProducts()
         {
-            if(IsWaterChecked || IsGasChecked || IsElectricChecked){
+            if (IsWaterChecked || IsGasChecked || IsElectricChecked) {
                 List<UtilityType> checkedTypes = new List<UtilityType>();
                 if (IsWaterChecked) checkedTypes.Add(UtilityType.Water);
                 if (IsGasChecked) checkedTypes.Add(UtilityType.Gas);
@@ -331,7 +341,7 @@ namespace sensusProducts.ViewModel
                 GenerateProductList();
                 products = tempProductList;
             }
-        
+
             else
             {
                 GenerateProductList();
@@ -343,8 +353,17 @@ namespace sensusProducts.ViewModel
             // Navigate back to the previous view
             ViewProductFrame.Content = null;
             MainGrid.Visibility = Visibility.Visible; // Show the main grid again
-            
+
         }
+
+        private void CreateSecButStyle()
+        {
+
+            
+
+
+        }
+
 
         #endregion
 
@@ -356,5 +375,8 @@ namespace sensusProducts.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        
     }
 }

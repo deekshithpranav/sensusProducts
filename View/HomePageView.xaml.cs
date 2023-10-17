@@ -14,7 +14,6 @@ namespace sensusProducts.View
         public HomePageView()
         {
             InitializeComponent();
-
             HomePageViewModel viewModel = new HomePageViewModel(ProductList, viewProductFrame, MainGrid);
             DataContext = viewModel;
             
