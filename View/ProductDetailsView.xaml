@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
-        xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
+      xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
         mc:Ignorable="d"
         Title="ProductDetailsView" 
       MinHeight="630" MinWidth="800">
-
+    <Page.Resources>
+        <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -66,11 +68,11 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto" >
                             <StackPanel HorizontalAlignment="Left" Margin="0,5,20,20">
                                 <!-- Content for the "Features" tab -->
-                                <TextBlock Margin="10">
-          <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
+                                <TextBlock Margin="10" Visibility="{Binding FindDocLinkAbl, Converter={StaticResource BoolToVisibilityConverter}}">
+    <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
                                 </TextBlock>
                                 <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
-                                <TextBlock Margin="10">
+                                <TextBlock Margin="10" Visibility="{Binding DownloadDocLinkAbl, Converter={StaticResource BoolToVisibilityConverter}}">
          <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
                                 </TextBlock>
                             </StackPanel>

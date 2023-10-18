@@ -91,6 +91,7 @@
     <Compile Include="Service\IProductService.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
     <Compile Include="ViewModel\Commands\AddProductCommand.cs" />
+    <Compile Include="ViewModel\Helpers\BoolToVisibilityConverter.cs" />
     <Compile Include="ViewModel\HomePageViewModel.cs" />
     <Compile Include="ViewModel\ProductDetailsViewModel.cs" />
     <Compile Include="ViewModel\Commands\RelayCommand.cs" />

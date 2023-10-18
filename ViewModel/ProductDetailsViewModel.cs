@@ -86,21 +86,33 @@ namespace sensusProducts.ViewModel
             }
         }
 
-        public void FindDocURL()
-        {
-            if (fdURL != "")
+        public bool _findDocLinkAbl = true;
+        public bool FindDocLinkAbl { get
             {
-                System.Diagnostics.Process.Start(fdURL);
+                return _findDocLinkAbl;
+            }
+            set
+            {
+
+                _findDocLinkAbl = value;
+                OnPropertyChanged(nameof(FindDocLinkAbl));
             }
         }
 
-        public void ProductDocURL()
+        public bool _downlaodDocLinkAbl = true;
+        public bool DownloadDocLinkAbl
         {
-            if(pdURL != "")
+            get
             {
-                System.Diagnostics.Process.Start(pdURL);
+                return _downlaodDocLinkAbl;
+            }
+            set
+            {
+                _downlaodDocLinkAbl = value;
+                OnPropertyChanged(nameof(DownloadDocLinkAbl));
             }
         }
+
         public ICommand FindDocURLCommand { get; private set; }
         public ICommand ProductDocURLCommand { get; private set; }
 
@@ -156,6 +168,14 @@ namespace sensusProducts.ViewModel
             ProductDescription = product.Description;
             ProductFeatures = product.Features;
             ImageSources = new ObservableCollection<string>();
+            if(fdURL == string.Empty)
+            {
+                FindDocLinkAbl = false;
+            }
+            if(pdURL == string.Empty)
+            {
+                DownloadDocLinkAbl = false;
+            }
             
             MainImageSource = product.ImgLinks[0];
         }
@@ -287,7 +307,21 @@ namespace sensusProducts.ViewModel
             }
         }
 
+        public void FindDocURL()
+        {
+            if (fdURL != "")
+            {
+                System.Diagnostics.Process.Start(fdURL);
+            }
+        }
 
+        public void ProductDocURL()
+        {
+            if (pdURL != "")
+            {
+                System.Diagnostics.Process.Start(pdURL);
+            }
+        }
 
 
 

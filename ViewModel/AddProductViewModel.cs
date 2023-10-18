@@ -33,9 +33,6 @@ namespace sensusProducts.ViewModel
         // Event handler for property change notifications
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Converter for option selection
-        public OptionConverter optionConverter;
-
         // Command for adding a product
         public ICommand AddProductCommand { get; }
 
@@ -67,9 +64,10 @@ namespace sensusProducts.ViewModel
                 if (productLink != value)
                 {
                     productLink = value;
-                    OnPropertyChanged(nameof(ProductLink));
                     // Update IsSubmitButtonEnabled based on text in ProductLink
                     IsSubmitButtonEnabled = !string.IsNullOrEmpty(productLink);
+                    OnPropertyChanged(nameof(ProductLink));
+                    
                 }
             }
         }

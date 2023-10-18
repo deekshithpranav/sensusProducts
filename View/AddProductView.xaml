@@ -39,7 +39,7 @@
                                             <!-- Content for Source option -->
                                             <StackPanel DataContext="{StaticResource vm}" Margin="20">
                                                 <TextBlock Text="Enter URL:" Margin="0,0,0,10" FontWeight="Medium" FontSize="13"/>
-                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
+                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
                                                 <Button Command="{Binding AddProductCommand}" Content="Submit" 
                                                 IsEnabled="{Binding IsSubmitButtonEnabled}" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25"/>
                                             </StackPanel>
