@@ -28,6 +28,7 @@ namespace sensusProducts.ViewModel
             IsSubmitButtonEnabled = false;
             ImageTextBoxes = new ObservableCollection<ImageTextBox>();
         }
+
         #region Properties
 
         // Event handler for property change notifications
@@ -37,7 +38,7 @@ namespace sensusProducts.ViewModel
         public ICommand AddProductCommand { get; }
 
         // Service for managing product data
-        private IProductService productService;
+        private readonly IProductService productService;
 
         // Selected option for product addition (e.g., 'Source' or 'Manual')
         private string selectedOption;
@@ -67,7 +68,6 @@ namespace sensusProducts.ViewModel
                     // Update IsSubmitButtonEnabled based on text in ProductLink
                     IsSubmitButtonEnabled = !string.IsNullOrEmpty(productLink);
                     OnPropertyChanged(nameof(ProductLink));
-                    
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace sensusProducts.ViewModel
             }
         }
 
-        //product-related properties (e.g., name, description, etc.)
+        // Product-related properties (e.g., name, description, etc.)
         public string ProductName { get; set; }
         public string ProductDescription { get; set; }
         public string ProductFeatures { get; set; }
@@ -117,6 +117,7 @@ namespace sensusProducts.ViewModel
 
         // Flags for checking utility types (e.g., Water, Gas, Electric)
         private bool isWaterChecked;
+
         public bool IsWaterChecked
         {
             get { return isWaterChecked; }
@@ -131,6 +132,7 @@ namespace sensusProducts.ViewModel
         }
 
         private bool isGasChecked;
+
         public bool IsGasChecked
         {
             get { return isGasChecked; }
@@ -145,6 +147,7 @@ namespace sensusProducts.ViewModel
         }
 
         private bool isElectricChecked;
+
         public bool IsElectricChecked
         {
             get { return isElectricChecked; }
@@ -188,7 +191,7 @@ namespace sensusProducts.ViewModel
                     Product product = await scrapData.ScrapData(ProductLink);
 
                     // Add the scraped product to the service
-                    if(product != null)
+                    if (product != null)
                     {
                         productService.AddProduct(product);
                         MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -200,7 +203,6 @@ namespace sensusProducts.ViewModel
                     MessageBox.Show("Invalid URL: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 ProductLink = string.Empty;
-
             }
             else
             {
@@ -210,10 +212,10 @@ namespace sensusProducts.ViewModel
 
                 string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
                 string query = @"
-                 SELECT TOP 1 PID
-                 FROM productIDs
-                 ORDER BY PID DESC;
-            ";
+                    SELECT TOP 1 PID
+                    FROM productIDs
+                    ORDER BY PID DESC;
+                ";
                 int productID = 0;
                 try
                 {
@@ -228,7 +230,6 @@ namespace sensusProducts.ViewModel
                             // Execute the SQL command to create the table
                             object str = command.ExecuteScalar();
                             productID = (int)str + 1;
-
                         }
                     }
                 }
@@ -237,7 +238,7 @@ namespace sensusProducts.ViewModel
                     Debug.WriteLine(ex.Message);
                 }
 
-              // Create a new product object
+                // Create a new product object
                 Product product = new Product
                 {
                     Id = productID,
@@ -249,7 +250,6 @@ namespace sensusProducts.ViewModel
                     DocLink = ProductDocLink,
                     ImgLinks = ProductImgLinks
                 };
-
 
                 // SQL query to check if the title exists in the database
                 query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
@@ -291,7 +291,6 @@ namespace sensusProducts.ViewModel
                 ProductFeatures = null;
                 ProductDocLink = string.Empty;
 
-
                 // Show a success message
                 MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -330,7 +329,7 @@ namespace sensusProducts.ViewModel
             return imgLinks;
         }
 
-        // Generate text boxes based on selected item count
+        // Generate text boxes based on the selected item count
         public void GenerateTextBoxes()
         {
             ImageTextBoxes.Clear();

@@ -86,9 +86,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\UtilityTypeImg.cs" />
-    <Compile Include="Service\ProductDataScraping.cs" />
-    <Compile Include="Service\ProductServices.cs" />
-    <Compile Include="Service\IProductService.cs" />
+    <Compile Include="Services\ProductDataScraping.cs" />
+    <Compile Include="Services\ProductServices.cs" />
+    <Compile Include="Services\IProductService.cs" />
     <Compile Include="ViewModel\AddProductViewModel.cs" />
     <Compile Include="ViewModel\Commands\AddProductCommand.cs" />
     <Compile Include="ViewModel\Helpers\BoolToVisibilityConverter.cs" />

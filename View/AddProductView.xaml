@@ -8,49 +8,54 @@
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
         Icon="../Resources/Logo/Icon.ico"
-    Title="Sensus Products" MinHeight="630" MinWidth="1100">
+        Title="Sensus Products" MinHeight="630" MinWidth="1100">
 
     <Window.Resources>
         <vm:AddProductViewModel x:Key="vm"/>
         <xm:OptionConverter x:Key="OptionConverter" />
-
     </Window.Resources>
-    
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-    <Grid DataContext="{StaticResource vm}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.RowSpan="2">
-            <Label Name="TitleL" Content="Add Product" FontSize="16" FontWeight="Medium" Margin="8"/>
-            <RadioButton Content="Enter Source Link" GroupName="insertType"
-                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" Margin="20" FontSize="15" FontWeight="Medium"/>
-            <RadioButton Content="Enter Manually" GroupName="insertType"
-                         IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" Margin="20" FontSize="15" FontWeight="Medium"/>
+        <Grid DataContext="{StaticResource vm}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.RowSpan="2">
+                <Label Name="TitleL" Content="Add Product" FontSize="16" FontWeight="Medium" Margin="8"/>
+
+                <!-- Radio Buttons for Selecting Input Type -->
+                <RadioButton Content="Enter Source Link" GroupName="insertType"
+                             IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Source}" Margin="20" FontSize="15" FontWeight="Medium"/>
+                <RadioButton Content="Enter Manually" GroupName="insertType"
+                             IsChecked="{Binding SelectedOption, Mode=TwoWay, Converter={StaticResource OptionConverter}, ConverterParameter=Manual}" Margin="20" FontSize="15" FontWeight="Medium"/>
+
+                <!-- Content Control for Dynamic Content -->
                 <ContentControl Grid.Row="1">
                     <ContentControl.Style>
                         <Style TargetType="ContentControl">
                             <Style.Triggers>
+                                <!-- DataTrigger for Source Option -->
                                 <DataTrigger Binding="{Binding SelectedOption}" Value="Source">
                                     <Setter Property="Content">
                                         <Setter.Value >
                                             <!-- Content for Source option -->
                                             <StackPanel DataContext="{StaticResource vm}" Margin="20">
                                                 <TextBlock Text="Enter URL:" Margin="0,0,0,10" FontWeight="Medium" FontSize="13"/>
-                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
+                                                <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
                                                 <Button Command="{Binding AddProductCommand}" Content="Submit" 
-                                                IsEnabled="{Binding IsSubmitButtonEnabled}" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25"/>
+                                                        IsEnabled="{Binding IsSubmitButtonEnabled}" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25"/>
                                             </StackPanel>
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
+
+                                <!-- DataTrigger for Manual Option -->
                                 <DataTrigger Binding="{Binding SelectedOption}" Value="Manual">
                                     <Setter Property="Content">
                                         <Setter.Value>
                                             <!-- Content for Manual option -->
-
                                             <Grid Margin="20">
                                                 <StackPanel DataContext="{StaticResource vm}">
                                                     <!-- Product Name -->
@@ -71,7 +76,6 @@
                                                     <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="2,0,0,5"/>
                                                     <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="2,0,0,25"/>
 
-
                                                     <!-- Document Link -->
                                                     <TextBlock Text="Document Link:" FontWeight="Medium"/>
                                                     <TextBox Text="{Binding ProductDocLink}" Name="documentLinkTextBox" Width="400" Margin="0,5,0,25" Style="{DynamicResource TextBoxStyle}"/>
@@ -90,6 +94,7 @@
                                                         <ComboBoxItem Content="4" />
                                                         <ComboBoxItem Content="5" />
                                                     </ComboBox>
+
                                                     <!-- Image Links (variable number of TextBoxes based on user input) -->
                                                     <ItemsControl Name="imageLinksStackPanel" ItemsSource="{Binding ImageTextBoxes}">
                                                         <ItemsControl.ItemTemplate>
@@ -103,11 +108,9 @@
                                                     </ItemsControl>
 
                                                     <!-- Submit Button -->
-                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25" Margin="0,20,0,0" 
-                                                     FontWeight="Medium"/>
+                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25" Margin="0,20,0,0" FontWeight="Medium"/>
                                                 </StackPanel>
                                             </Grid>
-
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
@@ -116,6 +119,6 @@
                     </ContentControl.Style>
                 </ContentControl>
             </StackPanel>
-    </Grid>
+        </Grid>
     </ScrollViewer>
 </Window>

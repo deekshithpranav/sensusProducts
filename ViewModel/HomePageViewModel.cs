@@ -35,7 +35,6 @@ namespace sensusProducts.ViewModel
             this.MainGrid = MainGrid;
             // Generate the initial product list after getting the list from DB
             products = productService.LoadProductsFromDB();
-            CreateSecButStyle();
             GenerateProductList();
         }
 
@@ -63,8 +62,6 @@ namespace sensusProducts.ViewModel
 
         private string searchProduct;
 
-        Style secondaryButtonStyle = new Style(typeof(Button));
-
         List<Product> products;
 
         public string SearchProduct
@@ -74,7 +71,7 @@ namespace sensusProducts.ViewModel
             {
                 searchProduct = value;
                 OnPropertyChanged(nameof(SearchProduct));
-                findProducts();
+                FindProducts();
             }
         }
 
@@ -172,10 +169,12 @@ namespace sensusProducts.ViewModel
             MainGrid.ColumnDefinitions.Add(ProductTitleColumn);
 
             // Create a TextBlock for the product title
-            TextBlock Title = new TextBlock();
-            Title.Text = product.Name;
-            Title.FontWeight = FontWeights.Bold;
-            Title.FontSize = 16;
+            TextBlock Title = new TextBlock
+            {
+                Text = product.Name,
+                FontWeight = FontWeights.Bold,
+                FontSize = 16
+            };
 
             // Create an Image control for displaying the product image
             Image productImage = new Image();
@@ -186,17 +185,21 @@ namespace sensusProducts.ViewModel
             productImage.Height = 150;
 
             // Create a TextBlock for the product type
-            StackPanel utypePanel = new StackPanel();
-            utypePanel.Orientation = Orientation.Horizontal;
-            utypePanel.Margin = new Thickness(0, 0, 0, 10);
+            StackPanel utypePanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 0, 0, 10)
+            };
             string baseDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string projectDirectory = Path.GetFullPath(Path.Combine(baseDirectory, "..\\..\\"));
             foreach (UtilityType utilityType in product.UtilityTypes)
             {
                 string utype = utilityType.ToString();
-                Image utilityImage = new Image();
-                utilityImage.Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png"));
-                utilityImage.Height = 20;
+                Image utilityImage = new Image
+                {
+                    Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png")),
+                    Height = 20
+                };
                 utypePanel.Children.Add(utilityImage);
             }
 
@@ -212,12 +215,14 @@ namespace sensusProducts.ViewModel
 
 
             // Create a button to view product details
-            Button button = new Button();
-            button.Content = "View Product";
-            button.Style = (Style)Application.Current.FindResource("SecondaryButtonStyle");
-            button.Width = 130;
-            button.Height = 25;
-            button.Click += (sender, e) => View_Product(sender, e, product);
+            Button button = new Button
+            {
+                Content = "View Product",
+                Style = (Style)Application.Current.FindResource("SecondaryButtonStyle"),
+                Width = 130,
+                Height = 25
+            };
+            button.Click += (sender, e) => View_Product(product);
 
             // Create a stack panel for product description
             StackPanel UTypeAndButton = new StackPanel();
@@ -239,11 +244,13 @@ namespace sensusProducts.ViewModel
             UTypeAndButton.VerticalAlignment = VerticalAlignment.Bottom;
             UTypeAndButton.HorizontalAlignment = HorizontalAlignment.Right;
             // Create a border for the grid element
-            Border border = new Border();
-            border.BorderBrush = Brushes.Gray;
-            border.BorderThickness = new Thickness(1);
-            border.Padding = new Thickness(5);
-            border.Child = MainGrid;
+            Border border = new Border
+            {
+                BorderBrush = Brushes.Gray,
+                BorderThickness = new Thickness(1),
+                Padding = new Thickness(5),
+                Child = MainGrid
+            };
 
             return border;
         }
@@ -272,7 +279,7 @@ namespace sensusProducts.ViewModel
 
         //initially populate with all the products in database
 
-        private void findProducts()
+        private void FindProducts()
         {
             List<Product> matchingProductList = new List<Product>();
             foreach (Product product in products)
@@ -290,7 +297,7 @@ namespace sensusProducts.ViewModel
             products = tempProductList;
         }
 
-        private void View_Product(object sender, RoutedEventArgs e, Product product)
+        private void View_Product(Product product)
         {
             // Handle the click event for viewing product details
 
@@ -356,20 +363,11 @@ namespace sensusProducts.ViewModel
 
         }
 
-        private void CreateSecButStyle()
-        {
-
-            
-
-
-        }
-
-
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private IProductService productService;
+        private readonly IProductService productService;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

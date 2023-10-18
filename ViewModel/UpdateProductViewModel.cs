@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace sensusProducts.ViewModel
 {
-    public class UpdateProductViewModel:INotifyPropertyChanged
+    public class UpdateProductViewModel : INotifyPropertyChanged
     {
         public UpdateProductViewModel(Product Product, HomePageViewModel HomePageViewModel)
         {
@@ -21,8 +21,6 @@ namespace sensusProducts.ViewModel
             this.HomePageViewModel = HomePageViewModel;
             InitializeParams();
         }
-
-
 
         #region Properties
 
@@ -85,7 +83,6 @@ namespace sensusProducts.ViewModel
 
         private bool isElectricChecked;
 
-
         public bool IsElectricChecked
         {
             get { return isElectricChecked; }
@@ -99,13 +96,12 @@ namespace sensusProducts.ViewModel
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand submitProductCommand { get; set; }
         IProductService productService;
         public ICommand NavigateBack { get; private set; }
-        #endregion
 
+        #endregion
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -144,7 +140,7 @@ namespace sensusProducts.ViewModel
             ProductFeatures = Product.Features;
             ProductDocLink = Product.DocLink;
             ProductFindDocLink = Product.FindDocLink;
-            ImageTextBoxes = ImageTextBoxes = new ObservableCollection<ImageTextBox>();
+            ImageTextBoxes = new ObservableCollection<ImageTextBox>();
             SelectedItemCount = Product.ImgLinks.Count.ToString();
             GenerateTextBoxes();
             if (Product.UtilityTypes.Contains(UtilityType.Water))
@@ -202,7 +198,6 @@ namespace sensusProducts.ViewModel
             HomePageViewModel.GoBackToMain();
         }
 
-
         public void updateProduct()
         {
             // Get selected utility types and image links
@@ -223,7 +218,7 @@ namespace sensusProducts.ViewModel
 
             try
             {
-                productService.UpdateProduct(product,Product.Id);
+                productService.UpdateProduct(product, Product.Id);
 
             }
             catch (Exception ex)
@@ -231,7 +226,7 @@ namespace sensusProducts.ViewModel
                 MessageBox.Show("Invalid Information: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Product updated successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

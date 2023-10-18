@@ -18,9 +18,8 @@ using System.IO;
 
 namespace sensusProducts.ViewModel
 {
-    public class ProductDetailsViewModel:INotifyPropertyChanged
+    public class ProductDetailsViewModel : INotifyPropertyChanged
     {
-
         public ProductDetailsViewModel()
         {
 
@@ -30,37 +29,37 @@ namespace sensusProducts.ViewModel
         {
             FindDocURLCommand = new RelayCommand(FindDocURL);
             ProductDocURLCommand = new RelayCommand(ProductDocURL);
-            DeleteProductCommand = new RelayCommand(deleteProduct);
-            UpdateProductCommand = new RelayCommand(updateProduct);
-            NavigateBack = new RelayCommand(goBack);
-            this.homePageViewModel = homePageViewModel;
+            DeleteProductCommand = new RelayCommand(DeleteProduct);
+            UpdateProductCommand = new RelayCommand(UpdateProduct);
+            NavigateBack = new RelayCommand(GoBack);
+            this.HomePageViewModel = homePageViewModel;
             this.product = product;
             this.ViewProductFrame = ViewProductFrame;
-            initializeParams();
+            InitializeParams();
         }
-
-
 
         #region Properties
 
-        Product product;
-
+        readonly Product product;
 
         Frame ViewProductFrame { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        ProductServices productServices = new ProductServices();
-        public string fdURL { get; set; }
-        public string pdURL { get; set; }
+        readonly ProductServices productServices = new ProductServices();
+        public string FdURL { get; set; }
+        public string PdURL { get; set; }
 
         private string productDescription;
-        public string ProductDescription { 
-            get { 
-                return productDescription; 
-            } 
-            set {  
-                productDescription = value; 
+        public string ProductDescription
+        {
+            get
+            {
+                return productDescription;
+            }
+            set
+            {
+                productDescription = value;
                 OnPropertyChanged(nameof(productDescription));
-            } 
+            }
         }
 
         private string productName;
@@ -74,26 +73,26 @@ namespace sensusProducts.ViewModel
             }
         }
 
-
         private string productFeatures;
         public string ProductFeatures
         {
-            get { return productFeatures;}
+            get { return productFeatures; }
             set
             {
-                productFeatures = value; 
+                productFeatures = value;
                 OnPropertyChanged(nameof(productFeatures));
             }
         }
 
         public bool _findDocLinkAbl = true;
-        public bool FindDocLinkAbl { get
+        public bool FindDocLinkAbl
+        {
+            get
             {
                 return _findDocLinkAbl;
             }
             set
             {
-
                 _findDocLinkAbl = value;
                 OnPropertyChanged(nameof(FindDocLinkAbl));
             }
@@ -118,12 +117,12 @@ namespace sensusProducts.ViewModel
 
         public ICommand NavigateBack { get; }
 
-        HomePageViewModel homePageViewModel { get; }
+        HomePageViewModel HomePageViewModel { get; }
 
         public ICommand UpdateProductCommand { get; private set; }
         public ICommand DeleteProductCommand { get; private set; }
 
-        List<Image> ImageObjects = new List<Image>();
+        readonly List<Image> ImageObjects = new List<Image>();
 
         private ObservableCollection<string> _imageSources;
 
@@ -157,54 +156,51 @@ namespace sensusProducts.ViewModel
 
         public StackPanel ProductsGallery { get; set; }
         public StackPanel UtilityList { get; set; }
+
         #endregion
 
-
-        public void initializeParams()
+        public void InitializeParams()
         {
             ProductName = product.Name;
-            fdURL = product.FindDocLink;
-            pdURL = product.DocLink;
+            FdURL = product.FindDocLink;
+            PdURL = product.DocLink;
             ProductDescription = product.Description;
             ProductFeatures = product.Features;
             ImageSources = new ObservableCollection<string>();
-            if(fdURL == string.Empty)
+            if (FdURL == string.Empty)
             {
                 FindDocLinkAbl = false;
             }
-            if(pdURL == string.Empty)
+            if (PdURL is null || PdURL == string.Empty)
             {
                 DownloadDocLinkAbl = false;
             }
-            
+
             MainImageSource = product.ImgLinks[0];
         }
 
-        
-
-        public void goBack()
+        public void GoBack()
         {
-            homePageViewModel.GoBackToMain();
-            
+            HomePageViewModel.GoBackToMain();
         }
 
-        public void deleteProduct()
+        public void DeleteProduct()
         {
             productServices.DeleteProductInDB(product.Id);
-            goBack();
-            homePageViewModel.RefreshProductsList();
+            GoBack();
+            HomePageViewModel.RefreshProductsList();
         }
 
-        private void updateProduct()
+        private void UpdateProduct()
         {
-           UpdateProductView updateProductView = new UpdateProductView();
-           UpdateProductViewModel updateProductViewModel = new UpdateProductViewModel(product, homePageViewModel);
-           updateProductView.DataContext = updateProductViewModel;
+            UpdateProductView updateProductView = new UpdateProductView();
+            UpdateProductViewModel updateProductViewModel = new UpdateProductViewModel(product, HomePageViewModel);
+            updateProductView.DataContext = updateProductViewModel;
             updateProductView.InitializeComponent();
             ViewProductFrame.Navigate(updateProductView);
         }
 
-        //generate utility list images 
+        // Generate utility list images
         public void GenerateUtilityListImages()
         {
             UtilityList.Orientation = Orientation.Horizontal;
@@ -214,17 +210,18 @@ namespace sensusProducts.ViewModel
             foreach (UtilityType utilityType in product.UtilityTypes)
             {
                 string utype = utilityType.ToString();
-                Image utilityImage = new Image();
-                utilityImage.Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png"));
-                utilityImage.Height = 25;
+                Image utilityImage = new Image
+                {
+                    Source = new BitmapImage(new Uri($"{projectDirectory}Resources\\UtilityTypeImages\\{utype}.png")),
+                    Height = 25
+                };
                 UtilityList.Children.Add(utilityImage);
             }
         }
 
-        //gallery
+        // Gallery
         public void GenerateGallery()
         {
-
             foreach (var item in product.ImgLinks)
             {
                 if (product.ImgLinks.IndexOf(item) == 0)
@@ -236,7 +233,6 @@ namespace sensusProducts.ViewModel
                         Source = new BitmapImage(new Uri(item)),
                         Opacity = 1,
                     };
-
                     ImageObjects.Add(image);
                     image.MouseLeftButtonDown += ChangeOpacity;
                     image.MouseLeftButtonDown += ShowImage;
@@ -251,7 +247,6 @@ namespace sensusProducts.ViewModel
                         Source = new BitmapImage(new Uri(item)),
                         Opacity = 0.5
                     };
-
                     ImageObjects.Add(image);
                     image.MouseLeftButtonDown += ChangeOpacity;
                     image.MouseLeftButtonDown += ShowImage;
@@ -266,7 +261,6 @@ namespace sensusProducts.ViewModel
                         Source = new BitmapImage(new Uri(item)),
                         Opacity = 0.5
                     };
-
                     ImageObjects.Add(image);
                     image.MouseLeftButtonDown += ChangeOpacity;
                     image.MouseLeftButtonDown += ShowImage;
@@ -274,7 +268,6 @@ namespace sensusProducts.ViewModel
                 }
             }
             ImageObjects.FirstOrDefault().Opacity = 1;
-
         }
 
         private void ShowImage(object sender, MouseButtonEventArgs e)
@@ -309,22 +302,19 @@ namespace sensusProducts.ViewModel
 
         public void FindDocURL()
         {
-            if (fdURL != "")
+            if (!string.IsNullOrEmpty(FdURL))
             {
-                System.Diagnostics.Process.Start(fdURL);
+                System.Diagnostics.Process.Start(FdURL);
             }
         }
 
         public void ProductDocURL()
         {
-            if (pdURL != "")
+            if (!string.IsNullOrEmpty(PdURL))
             {
-                System.Diagnostics.Process.Start(pdURL);
+                System.Diagnostics.Process.Start(PdURL);
             }
         }
-
-
-
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

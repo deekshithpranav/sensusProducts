@@ -5,21 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
-      xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
+        xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
         mc:Ignorable="d"
         Title="ProductDetailsView" 
-      MinHeight="630" MinWidth="800">
+        MinHeight="630" MinWidth="800">
+
+    <!-- Page Resources -->
     <Page.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Page.Resources>
 
+    <!-- Main Grid -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
-
+        <!-- Left Grid -->
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*" />
@@ -28,52 +31,54 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel HorizontalAlignment="Left" Grid.Row="0">
+                <!-- Back Button -->
                 <Button Style="{DynamicResource PrimaryButtonStyle}" HorizontalAlignment="Left" Content="Back" Height="25" Width="70" Command="{Binding NavigateBack}" Margin="15"/>
                 <StackPanel Name="UtilityList">
-                    
+                    <!-- Utility List Content -->
                 </StackPanel>
-                <TextBlock  TextWrapping="Wrap"  FontSize="20" FontWeight="Bold" Text="{Binding ProductName}"  Margin="20,20,20,0" />
+                <TextBlock TextWrapping="Wrap" FontSize="20" FontWeight="Bold" Text="{Binding ProductName}" Margin="20,20,20,0" />
             </StackPanel>
-            <Image  Grid.Row="1" Source="{Binding MainImageSource}" />
-
-            <StackPanel  Margin="0,30,0,0" Height="60" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Name="productsGallery">
-                
+            <Image Grid.Row="1" Source="{Binding MainImageSource}" />
+            <StackPanel Margin="0,30,0,0" Height="60" Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" Name="productsGallery">
+                <!-- Products Gallery -->
             </StackPanel>
-
-
             <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="15,0,0,30">
+                <!-- Edit and Delete Buttons -->
                 <Button Content="Edit" Width="60" Height="25" Margin="5,0,30,15" Command="{Binding UpdateProductCommand}" Style="{DynamicResource SecondaryButtonStyle}"/>
                 <Button Content="Delete" Width="60" Height="25" Margin="0,0,0,15" Command="{Binding DeleteProductCommand}" Style="{DynamicResource SecondaryButtonStyle}"/>
             </StackPanel>
         </Grid>
-        
+
+        <!-- Right Grid -->
         <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Border CornerRadius="10" >
-                <TabControl x:Name="tabControl"  Style="{DynamicResource TabControlStyle}"  >
+            <Border CornerRadius="10">
+                <TabControl x:Name="tabControl" Style="{DynamicResource TabControlStyle}">
+                    <!-- Tab Item for "Description" -->
                     <TabItem Width="149" Height="35" Style="{DynamicResource TabItemStyle}">
                         <TabItem.Header>
                             <TextBlock Text="Description" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel HorizontalAlignment="Left" Margin="0,5,20,0">
                                 <!-- Content for the "Description" tab -->
                                 <TextBlock TextAlignment="Justify" Text="{Binding ProductDescription}" TextWrapping="Wrap" Margin="0,0,0,20"/>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
+                    <!-- Tab Item for "Features" -->
                     <TabItem Width="149" Height="35" Margin="1,0,0,0" Style="{DynamicResource TabItemStyle}">
                         <TabItem.Header>
-                            <TextBlock Text="Features"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="Features" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </TabItem.Header>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel HorizontalAlignment="Left" Margin="0,5,20,20">
                                 <!-- Content for the "Features" tab -->
                                 <TextBlock Margin="10" Visibility="{Binding FindDocLinkAbl, Converter={StaticResource BoolToVisibilityConverter}}">
-    <Hyperlink Command="{Binding FindDocURLCommand}" >Find Product Documents</Hyperlink>
+                                    <Hyperlink Command="{Binding FindDocURLCommand}">Find Product Documents</Hyperlink>
                                 </TextBlock>
                                 <TextBlock Text="{Binding ProductFeatures}" Margin="10" TextAlignment="Justify" TextWrapping="Wrap"/>
                                 <TextBlock Margin="10" Visibility="{Binding DownloadDocLinkAbl, Converter={StaticResource BoolToVisibilityConverter}}">
-         <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
+                                    <Hyperlink Command="{Binding ProductDocURLCommand}">Download Product Document</Hyperlink>
                                 </TextBlock>
                             </StackPanel>
                         </ScrollViewer>

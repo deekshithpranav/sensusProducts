@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:vm="clr-namespace:sensusProducts.ViewModel"
+        xmlns:converter="clr-namespace:sensusProducts.ViewModel.Helpers"
         mc:Ignorable="d"
         Icon="../Resources/Logo/Icon.ico"
         Title="Sensus Products" MinHeight="630" MinWidth="1100">
 
-
-    <Grid >
-        <Grid  Name="MainGrid">
+    <!-- Main Grid -->
+    <Grid>
+        <Grid Name="MainGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-
-            <StackPanel Orientation="Vertical" Background="#DEEFF4" >
-                
-                <Button  Command="{Binding OpenAddProductPageCommand}" Style="{DynamicResource PrimaryButtonStyle}" Height="28" Width="130" Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+            
+            <!-- Left StackPanel for Filters -->
+            <StackPanel Orientation="Vertical" Background="#E6F0F2">
+                                <!-- Add Product Button -->
+                <Button Command="{Binding OpenAddProductPageCommand}" Style="{DynamicResource PrimaryButtonStyle}" Height="28" Width="130" Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Button.Content>
                         <StackPanel Orientation="Horizontal" >
                             <TextBlock Margin="0,0,8,4" Text="+" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
@@ -28,6 +30,7 @@
                     </Button.Content>
                 </Button>
 
+                <!-- Filter Section -->
                 <Label Content="Filter" FontWeight="Bold" FontSize="18" Margin="18,100,0,0"/>
                 <StackPanel Margin="10,0">
                     <CheckBox Name="chkWater" Margin="25,10,0,0" Content="Water" FontSize="13" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
@@ -35,26 +38,43 @@
                     <CheckBox Name="chkElectric" Margin="25,10,0,0" Content="Electric" FontSize="13" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}"/>
                 </StackPanel>
             </StackPanel>
+
+            <!-- Vertical Separators -->
             <Border Grid.Column="0" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
             <Border Grid.Column="1" Grid.ColumnSpan="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
+
+            <!-- Refresh Button Section -->
             <StackPanel VerticalAlignment="Bottom" Grid.Column="0">
                 <Button Margin="10" Width="80" Height="25" Command="{Binding RefreshProductListCommand}" Style="{DynamicResource SecondaryButtonStyle}" Content="Refresh" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </StackPanel>
+
+            <!-- Right Grid for Main Content -->
             <Grid Grid.Column="1">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="3*" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Background="#E6F0F2">
-                    <TextBox  Margin="30,100,30,10" Height="35" Width="auto" Style="{DynamicResource TextBoxStyle}" Tag="Search Product"   Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
-                </StackPanel>
-                <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
+                <!-- Search Box -->
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="5">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="5" Direction="320" Color="Gray" Opacity="0.5"/>
+                    </Border.Effect>
+                    <StackPanel Background="#E6F0F2">
+                        <TextBox  Margin="30,100,30,10" Height="35" Width="auto" Style="{DynamicResource TextBoxStyle}" Tag="Search Product" Text="{Binding SearchProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  FontSize="13" VerticalAlignment="Center" Grid.Row="0"/>
+                    </StackPanel>
+                </Border>
+                
 
+                <!-- ScrollViewer for Product List -->
+                <ScrollViewer Grid.Row="1" Name="ProductList"  Margin="0,0,2,0">
+                    <!-- Dynamic Product Content Goes Here -->
                 </ScrollViewer>
             </Grid>
         </Grid>
+
+        <!-- Frame for Viewing Product Details -->
         <Frame Name="viewProductFrame" NavigationUIVisibility="Hidden" MinHeight="630" MinWidth="800" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
     </Grid>
-    
 </Window>
