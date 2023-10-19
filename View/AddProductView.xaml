@@ -12,7 +12,7 @@
 
     <Window.Resources>
         <vm:AddProductViewModel x:Key="vm"/>
-        <xm:OptionConverter x:Key="OptionConverter" />
+        <xm:OptionConverter x:Key="OptionConverter"/>
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
