@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using sensusProducts.Service;
@@ -117,8 +114,10 @@ namespace sensusProducts.ViewModel
                 TextBox textBox = new TextBox();
                 String label = "Image Link " + (i + 1) + ": ";
                 textBox.Name = "textBox" + (i + 1);
-                textBox.Width = 200;
-                textBox.Margin = new System.Windows.Thickness(0, 5, 0, 5);
+                textBox.Width = 500;
+                textBox.Margin = new Thickness(0, 10, 0, 5);
+                textBox.SetResourceReference(TextBox.StyleProperty, "TextBoxStyle");
+                textBox.HorizontalAlignment = HorizontalAlignment.Left;
                 if (i < Product.ImgLinks.Count)
                 {
                     textBox.Text = Product.ImgLinks[i];

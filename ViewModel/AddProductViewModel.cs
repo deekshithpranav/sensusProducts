@@ -5,13 +5,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Controls;
 using sensusProducts.ViewModel.Commands;
-using sensusProducts.ViewModel.Helpers;
 using System.Data.SqlClient;
 
 namespace sensusProducts.ViewModel
@@ -19,12 +16,12 @@ namespace sensusProducts.ViewModel
     public class AddProductViewModel : INotifyPropertyChanged
     {
         // Constructor
-        [Obsolete]
         public AddProductViewModel()
         {
             // Initialize productService and addProductCommand
             productService = new ProductServices();
-            AddProductCommand = new AddproductCommand(Add_Product);
+            AddProductWithLinkCommand = new AddproductCommand(AddProductWithLink);
+            AddProductManuallyCommand = new AddproductCommand(AddProductManually);
             IsSubmitButtonEnabled = false;
             ImageTextBoxes = new ObservableCollection<ImageTextBox>();
         }
@@ -35,7 +32,10 @@ namespace sensusProducts.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Command for adding a product
-        public ICommand AddProductCommand { get; }
+        public ICommand AddProductWithLinkCommand { get; }
+
+        // Command for adding a product
+        public ICommand AddProductManuallyCommand { get; }
 
         // Service for managing product data
         private readonly IProductService productService;
@@ -172,8 +172,7 @@ namespace sensusProducts.ViewModel
         #region Methods
 
         // Method for adding a product
-        [Obsolete]
-        public async void Add_Product()
+        public async void AddProductWithLink()
         {
             if (selectedOption == "Source")
             {
@@ -204,96 +203,98 @@ namespace sensusProducts.ViewModel
                 }
                 ProductLink = string.Empty;
             }
-            else
-            {
-                // Get selected utility types and image links
-                UtilityTypesList = GetCheckedUtilityTypes();
-                ProductImgLinks = GetImgLinks();
+        }
 
-                string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
-                string query = @"
+        void AddProductManually()
+        {
+            // Get selected utility types and image links
+            UtilityTypesList = GetCheckedUtilityTypes();
+            ProductImgLinks = GetImgLinks();
+
+            string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+            string query = @"
                     SELECT TOP 1 PID
                     FROM productIDs
                     ORDER BY PID DESC;
                 ";
-                int productID = 0;
-                try
+            int productID = 0;
+            try
+            {
+                // Create a SqlConnection
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    // Create a SqlConnection
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
+                    connection.Open();
 
-                        // Create a SqlCommand
-                        using (SqlCommand command = new SqlCommand(query, connection))
-                        {
-                            // Execute the SQL command to create the table
-                            object str = command.ExecuteScalar();
-                            productID = (int)str + 1;
-                        }
+                    // Create a SqlCommand
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Execute the SQL command to create the table
+                        object str = command.ExecuteScalar();
+                        productID = (int)str + 1;
                     }
                 }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
-
-                // Create a new product object
-                Product product = new Product
-                {
-                    Id = productID,
-                    UtilityTypes = UtilityTypesList,
-                    Name = ProductName,
-                    Description = ProductDescription,
-                    FindDocLink = ProductFindDocLink,
-                    Features = ProductFeatures,
-                    DocLink = ProductDocLink,
-                    ImgLinks = ProductImgLinks
-                };
-
-                // SQL query to check if the title exists in the database
-                query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
-
-                try
-                {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
-
-                        using (SqlCommand cmd = new SqlCommand(query, connection))
-                        {
-                            cmd.Parameters.AddWithValue("@Title", product.Name);
-                            int count = (int)cmd.ExecuteScalar();
-
-                            if (count > 0)
-                            {
-                                // Product is already present in the database
-                                System.Windows.Forms.MessageBox.Show("Product is already present in the database");
-                                return;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions
-                    Console.WriteLine("Error: " + ex.Message);
-                }
-
-                // Add the manual product to the service
-                productService.AddProduct(product);
-
-                UtilityTypesList = null;
-                ProductImgLinks = null;
-                ProductName = string.Empty;
-                ProductDescription = string.Empty;
-                ProductFindDocLink = string.Empty;
-                ProductFeatures = null;
-                ProductDocLink = string.Empty;
-
-                // Show a success message
-                MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            // Create a new product object
+            Product product = new Product
+            {
+                Id = productID,
+                UtilityTypes = UtilityTypesList,
+                Name = ProductName,
+                Description = ProductDescription,
+                FindDocLink = ProductFindDocLink,
+                Features = ProductFeatures,
+                DocLink = ProductDocLink,
+                ImgLinks = ProductImgLinks
+            };
+
+            // SQL query to check if the title exists in the database
+            query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Title", product.Name);
+                        int count = (int)cmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            // Product is already present in the database
+                            System.Windows.Forms.MessageBox.Show("Product is already present in the database");
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Debug.WriteLine("Error: " + ex.Message);
+            }
+
+            // Add the manual product to the service
+            productService.AddProduct(product);
+
+            //reset the entries to add new product
+            UtilityTypesList = null;
+            ProductImgLinks = null;
+            ProductName = string.Empty;
+            ProductDescription = string.Empty;
+            ProductFindDocLink = string.Empty;
+            ProductFeatures = null;
+            ProductDocLink = string.Empty;
+
+            // Show a success message
+            MessageBox.Show("Product added successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        
         }
 
         // Get a list of checked utility types

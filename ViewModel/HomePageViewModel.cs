@@ -3,14 +3,10 @@ using sensusProducts.Service;
 using sensusProducts.View;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,12 +34,6 @@ namespace sensusProducts.ViewModel
             GenerateProductList();
         }
 
-
-        public HomePageViewModel()
-        {
-            productService = new ProductServices();
-        }
-
         #region Properties
 
         public ICommand OpenAddProductPageCommand { get; }
@@ -53,10 +43,6 @@ namespace sensusProducts.ViewModel
         public Frame ViewProductFrame;
 
         public Grid MainGrid;
-
-        public ICommand GasFilter { get; }
-
-        public ICommand ElectricFilter { get; }
 
         public ScrollViewer ScrollViewer { get; }
 
@@ -87,7 +73,7 @@ namespace sensusProducts.ViewModel
                 {
                     isWaterChecked = value;
                     OnPropertyChanged(nameof(IsWaterChecked));
-                    GenerateWaterProducts();
+                    FilterByUType();
                 }
             }
         }
@@ -103,7 +89,7 @@ namespace sensusProducts.ViewModel
                 {
                     isGasChecked = value;
                     OnPropertyChanged(nameof(IsGasChecked));
-                    GenerateWaterProducts();
+                    FilterByUType();
                 }
             }
         }
@@ -119,13 +105,14 @@ namespace sensusProducts.ViewModel
                 {
                     isElectricChecked = value;
                     OnPropertyChanged(nameof(isElectricChecked));
-                    GenerateWaterProducts();
+                    FilterByUType();
                 }
             }
         }
 
 
         private bool isVisible;
+
         public bool IsVisible
         {
             get
@@ -148,13 +135,12 @@ namespace sensusProducts.ViewModel
         {
             // Create and show the "AddProductView" window
             var addProductWindow = new AddProductView();
-            addProductWindow.InitializeComponent();
-            addProductWindow.Closing += AddProductWindow_Closing;
             addProductWindow.Show();
+            addProductWindow.Closing += AddProductWindow_Closing;
 
         }
 
-        private void AddProductWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void AddProductWindow_Closing(object sender, CancelEventArgs e)
         {
             RefreshProductsList();
         }
@@ -285,23 +271,21 @@ namespace sensusProducts.ViewModel
             foreach (Product product in products)
             {
                 string str = product.Name;
-                if (str.ToLower().StartsWith(SearchProduct.ToLower()))
+                if (str.ToLower().Contains(SearchProduct.ToLower()))
                 {
                     matchingProductList.Add(product);
                 }
             }
-            List<Product> tempProductList = products;
+            List<Product> originalProductList = products;
             products = matchingProductList;
             Debug.WriteLine("Invoked");
             GenerateProductList();
-            products = tempProductList;
+            products = originalProductList;
         }
 
+        // Handle the click event for viewing product details
         private void View_Product(Product product)
         {
-            // Handle the click event for viewing product details
-
-
             // Create a new window for displaying the product details
             ProductDetailsView productDetailsView = new ProductDetailsView(product, this, ViewProductFrame);
 
@@ -311,9 +295,7 @@ namespace sensusProducts.ViewModel
         }
 
         //filter the product list by checkbox commands
-
-        //water filter
-        public void GenerateWaterProducts()
+        public void FilterByUType()
         {
             if (IsWaterChecked || IsGasChecked || IsElectricChecked) {
                 List<UtilityType> checkedTypes = new List<UtilityType>();
@@ -360,7 +342,6 @@ namespace sensusProducts.ViewModel
             // Navigate back to the previous view
             ViewProductFrame.Content = null;
             MainGrid.Visibility = Visibility.Visible; // Show the main grid again
-
         }
 
         #endregion
@@ -373,8 +354,6 @@ namespace sensusProducts.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
-        
+                
     }
 }

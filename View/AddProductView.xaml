@@ -5,18 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:sensusProducts.View"
         xmlns:xm="clr-namespace:sensusProducts.ViewModel.Helpers"
-        xmlns:vm="clr-namespace:sensusProducts.ViewModel"
         mc:Ignorable="d"
         Icon="../Resources/Logo/Icon.ico"
         Title="Sensus Products" MinHeight="630" MinWidth="1100">
 
     <Window.Resources>
-        <vm:AddProductViewModel x:Key="vm"/>
         <xm:OptionConverter x:Key="OptionConverter"/>
     </Window.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid DataContext="{StaticResource vm}">
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -41,10 +39,10 @@
                                     <Setter Property="Content">
                                         <Setter.Value >
                                             <!-- Content for Source option -->
-                                            <StackPanel DataContext="{StaticResource vm}" Margin="20">
+                                            <StackPanel Margin="20">
                                                 <TextBlock Text="Enter URL:" Margin="0,0,0,10" FontWeight="Medium" FontSize="13"/>
                                                 <TextBox Name="productLink" Text="{Binding ProductLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" Style="{DynamicResource TextBoxStyle}"/>
-                                                <Button Command="{Binding AddProductCommand}" Content="Submit" 
+                                                <Button Command="{Binding AddProductWithLinkCommand}" Content="Submit" 
                                                         IsEnabled="{Binding IsSubmitButtonEnabled}" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25"/>
                                             </StackPanel>
                                         </Setter.Value>
@@ -57,7 +55,7 @@
                                         <Setter.Value>
                                             <!-- Content for Manual option -->
                                             <Grid Margin="20">
-                                                <StackPanel DataContext="{StaticResource vm}">
+                                                <StackPanel>
                                                     <!-- Product Name -->
                                                     <TextBlock Text="Product Name:" FontWeight="Medium"/>
                                                     <TextBox  Name="productNameTextBox" Text="{Binding ProductName}" Width="400" Margin="0,0,0,25" Style="{DynamicResource TextBoxStyle}"/>
@@ -108,7 +106,7 @@
                                                     </ItemsControl>
 
                                                     <!-- Submit Button -->
-                                                    <Button Command="{Binding AddProductCommand}" Content="Submit" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25" Margin="0,20,0,0" FontWeight="Medium"/>
+                                                    <Button Command="{Binding AddProductManuallyCommand}" Content="Submit" Style="{DynamicResource PrimaryButtonStyle}" Width="60" Height="25" Margin="0,20,0,0" FontWeight="Medium"/>
                                                 </StackPanel>
                                             </Grid>
                                         </Setter.Value>

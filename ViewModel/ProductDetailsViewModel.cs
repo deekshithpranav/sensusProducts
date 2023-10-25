@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using sensusProducts.Model;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,10 +17,6 @@ namespace sensusProducts.ViewModel
 {
     public class ProductDetailsViewModel : INotifyPropertyChanged
     {
-        public ProductDetailsViewModel()
-        {
-
-        }
 
         public ProductDetailsViewModel(Product product, HomePageViewModel homePageViewModel, Frame ViewProductFrame)
         {
@@ -43,7 +36,6 @@ namespace sensusProducts.ViewModel
         readonly Product product;
 
         Frame ViewProductFrame { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
         readonly ProductServices productServices = new ProductServices();
         public string FdURL { get; set; }
         public string PdURL { get; set; }
@@ -167,20 +159,26 @@ namespace sensusProducts.ViewModel
             ProductDescription = product.Description;
             ProductFeatures = product.Features;
             ImageSources = new ObservableCollection<string>();
+
             if (FdURL == string.Empty)
             {
                 FindDocLinkAbl = false;
             }
+
             if (PdURL is null || PdURL == string.Empty)
             {
                 DownloadDocLinkAbl = false;
             }
 
-            MainImageSource = product.ImgLinks[0];
+            if(product.ImgLinks.Count != 0)
+            {
+                MainImageSource = product.ImgLinks[0];
+            }
         }
 
         public void GoBack()
         {
+            Dispose();
             HomePageViewModel.GoBackToMain();
         }
 
@@ -222,6 +220,9 @@ namespace sensusProducts.ViewModel
         // Gallery
         public void GenerateGallery()
         {
+            //dont run if ImgLinks does not have any images stored.
+            if(product.ImgLinks.Count == 0) { return; }
+
             foreach (var item in product.ImgLinks)
             {
                 if (product.ImgLinks.IndexOf(item) == 0)
@@ -267,6 +268,7 @@ namespace sensusProducts.ViewModel
                     ProductsGallery.Children.Add(image);
                 }
             }
+
             ImageObjects.FirstOrDefault().Opacity = 1;
         }
 
@@ -315,6 +317,8 @@ namespace sensusProducts.ViewModel
                 System.Diagnostics.Process.Start(PdURL);
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

@@ -1,16 +1,8 @@
-﻿using HtmlAgilityPack;
-using sensusProducts.Model;
+﻿using sensusProducts.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace sensusProducts.Service
 {
@@ -192,10 +184,6 @@ namespace sensusProducts.Service
                                         
                                         // Map other properties here...
                                     };
-
-
-
-
                                     products.Add(product);
                                 }
                             }
@@ -245,7 +233,6 @@ namespace sensusProducts.Service
                                 }
                             }
 
-
                             query = @"SELECT * FROM PUtility WHERE PID = @IntValue;";
 
                             using (SqlCommand command2 = new SqlCommand(query, connection))
@@ -269,11 +256,8 @@ namespace sensusProducts.Service
                             product.ImgLinks = _ImgLinks;
                             product.UtilityTypes = _utilityTypes;
                         }
-                        
                         }
                     }
-                
-                
             }
             catch (Exception ex)
             {
@@ -319,7 +303,6 @@ namespace sensusProducts.Service
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-
                         command.Parameters.AddWithValue("@IntValue", OldProductID);
                         command.Parameters.AddWithValue("@StringValue", product.Name);
                         command.Parameters.AddWithValue("@StringValue2", product.Features);
@@ -363,6 +346,7 @@ namespace sensusProducts.Service
                             Debug.Write(rowsAffected);
                         }
                     }
+
                     query = "INSERT INTO ProductImgLinks (PID, ImgLink) VALUES (@IntValue, @StringValue)";
                     foreach (var imgLink in product.ImgLinks)
                     {
@@ -380,6 +364,43 @@ namespace sensusProducts.Service
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        public bool ProductExistsInDB(string productTitle)
+        {
+            //check if the product is already present in db
+
+            string connectionString = "Server=localhost\\SQLEXPRESS;Database=sensus;Trusted_Connection=True;";
+
+            // SQL query to check if the title exists in the database
+            string query = "SELECT COUNT(*) FROM productIDs WHERE PName = @Title";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@Title", productTitle);
+                        int count = (int)cmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            // Product is already present in the database
+                            System.Windows.Forms.MessageBox.Show("Product is already present in the database");
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Debug.WriteLine("Error: " + ex.Message);
+            }
+            return false;
         }
     }
 

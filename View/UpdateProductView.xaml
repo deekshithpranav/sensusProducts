@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1500" d:DesignWidth="800"
       Title="UpdateProductView">
 
 
@@ -17,34 +17,35 @@
 
                 <!-- Product Name -->
                 <TextBlock Text="Product Name:" />
-                <TextBox Name="productNameTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductName}" Width="300" Margin="0,0,0,10" />
+                <TextBox Name="productNameTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductName}" Width="300" Margin="5,10,0,10" HorizontalAlignment="Left"/>
 
                 <!-- Product Description -->
                 <TextBlock Text="Product Description:" />
-                <TextBox Name="productDescriptionTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductDescription}" Width="379" Height="142" Margin="0,0,0,10" TextWrapping="Wrap"/>
+                <TextBox Name="productDescriptionTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductDescription}" Width="379" Height="142" Margin="5,10,0,10" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 
                 <!-- Product Features -->
                 <TextBlock Text="Product Features:" />
-                <TextBox Name="productFeaturesTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductFeatures}" Width="379" Height="142" Margin="0,0,0,10" TextWrapping="Wrap"/>
+                <TextBox Name="productFeaturesTextBox" Style="{DynamicResource TextBoxStyle}" Text="{Binding ProductFeatures}" Width="379" Height="142" Margin="5,10,0,10" HorizontalAlignment="Left" TextWrapping="Wrap"/>
 
                 <!-- Utility Types (Checkboxes) -->
                 <TextBlock Text="Utility Types:" />
-                <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" />
-                <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" />
-                <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" />
-
+                <StackPanel Margin="5,10,0,10">
+                    <CheckBox Name="waterCheckBox" Content="Water" IsChecked="{Binding IsWaterChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="5"/>
+                    <CheckBox Name="gasCheckBox" Content="Gas" IsChecked="{Binding IsGasChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="5"/>
+                    <CheckBox Name="electricCheckBox" Content="Electric" IsChecked="{Binding IsElectricChecked}" Style="{DynamicResource CustomCheckBoxStyle}" Margin="5"/>
+                </StackPanel>
 
                 <!-- Document Link -->
                 <TextBlock Text="Document Link:" />
-                <TextBox Text="{Binding ProductDocLink}"  Style="{DynamicResource TextBoxStyle}" Name="documentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                <TextBox Text="{Binding ProductDocLink}"  Style="{DynamicResource TextBoxStyle}" Name="documentLinkTextBox" Width="300" Margin="5,10,0,10" HorizontalAlignment="Left" />
 
                 <!-- Find Document Link -->
                 <TextBlock Text="Find Document Link:" />
-                <TextBox Text="{Binding ProductFindDocLink}" Style="{DynamicResource TextBoxStyle}" Name="findDocumentLinkTextBox" Width="300" Margin="0,0,0,10" />
+                <TextBox Text="{Binding ProductFindDocLink}" Style="{DynamicResource TextBoxStyle}" Name="findDocumentLinkTextBox" Width="300" Margin="5,10,0,10" HorizontalAlignment="Left" />
 
                 <!-- Number of Image Links (Dropdown) -->
                 <TextBlock Text="Number of Image Links:" />
-                <ComboBox Name="imageLinksCountComboBox" Width="100" Margin="0,0,0,10" 
+                <ComboBox Name="imageLinksCountComboBox" Width="50" Margin="25,10,0,10" HorizontalAlignment="Left"
       SelectedItem="{Binding SelectedItemCount, Mode=TwoWay}" >
                     <ComboBoxItem Content="1" />
                     <ComboBoxItem Content="2" />
@@ -53,13 +54,13 @@
                     <ComboBoxItem Content="5" />
                 </ComboBox>
                 <!-- Image Links (variable number of TextBoxes based on user input) -->
-                <TextBlock Text="Image Links:" />
+                <TextBlock Text="Image Links:" FontWeight="Medium"/>
                 <ItemsControl Name="imageLinksStackPanel" ItemsSource="{Binding ImageTextBoxes}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Label}" Margin="0,0,10,0" />
-                                <ContentPresenter Content="{Binding TextBox}" />
+                                <ContentPresenter Content="{Binding TextBox}" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
