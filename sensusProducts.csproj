@@ -64,7 +64,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\UtilityTypeImg.cs" />
     <Compile Include="Services\ProductDataScraping.cs" />
     <Compile Include="Services\ProductServices.cs" />
     <Compile Include="Services\IProductService.cs" />
